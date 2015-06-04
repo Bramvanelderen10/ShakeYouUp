@@ -9,27 +9,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 
-public class DashboardActivity extends ActionBarActivity implements SensorEventListener {
+public class DashboardActivity extends ActionBarActivity {
 
-    private SensorManager SensorManager;
-    private Sensor sensor;
-    private float x = 0;
-    private float y = 0;
-    private float z = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        SensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = SensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        //Register sensor in the manager DUNNO WHAT THE DELAY IS
-        SensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        new MotionSensor(this);
     }
 
     @Override
@@ -54,35 +47,16 @@ public class DashboardActivity extends ActionBarActivity implements SensorEventL
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
 
-        if (event.values[0] > 10) this.x = event.values[0];
-        if (event.values[1] > 10) this.y = event.values[1];
-        if (event.values[2] > 10) this.z = event.values[2];
+    public void adjustScore(float[] screenVec) {
 
         TextView xField = (TextView)findViewById(R.id.xField);
-        xField.setText(Float.toString(this.x));
+        xField.setText(Float.toString(screenVec[0]));
 
         TextView yField = (TextView)findViewById(R.id.yField);
-        yField.setText(Float.toString(this.y));
+        yField.setText(Float.toString(screenVec[1]));
 
         TextView zField = (TextView)findViewById(R.id.zField);
-        zField.setText(Float.toString(this.z));
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    protected void onResume() {
-        super.onResume();
-        SensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-    protected void onPause() {
-        super.onPause();
-        SensorManager.unregisterListener(this);
+        zField.setText(Float.toString(screenVec[2]));
     }
 }
