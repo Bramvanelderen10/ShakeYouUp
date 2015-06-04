@@ -5,72 +5,35 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".DashboardActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="X:"
-        android:id="@+id/xLabel"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="95dp"
+        android:text="Start"
+        android:id="@+id/start"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="103dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/xField"
-        android:layout_alignBottom="@+id/xLabel"
-        android:layout_toRightOf="@+id/xLabel"
-        android:layout_marginLeft="34dp"
-        android:layout_marginStart="34dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/currentScore"
+        android:layout_below="@+id/start"
+        android:layout_alignRight="@+id/start"
+        android:layout_alignEnd="@+id/start"
+        android:layout_alignLeft="@+id/start"
+        android:layout_alignStart="@+id/start" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Y:"
-        android:id="@+id/yLabel"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/xLabel"
-        android:layout_toLeftOf="@+id/xField"
-        android:layout_toStartOf="@+id/xField" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Z:"
-        android:id="@+id/zLabel"
-        android:layout_below="@+id/yLabel"
-        android:layout_alignLeft="@+id/yLabel"
-        android:layout_alignStart="@+id/yLabel"
-        android:layout_marginTop="24dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/yField"
-        android:layout_above="@+id/zLabel"
-        android:layout_alignLeft="@+id/xField"
-        android:layout_alignStart="@+id/xField"
-        android:layout_alignRight="@+id/xField"
-        android:layout_alignEnd="@+id/xField" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/zField"
-        android:layout_alignTop="@+id/zLabel"
-        android:layout_alignLeft="@+id/yField"
-        android:layout_alignStart="@+id/yField"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/finalScore"
+        android:layout_below="@+id/currentScore"
+        android:layout_alignLeft="@+id/currentScore"
+        android:layout_alignStart="@+id/currentScore"
+        android:layout_marginTop="19dp"
+        android:layout_alignRight="@+id/currentScore"
+        android:layout_alignEnd="@+id/currentScore" />
 </RelativeLayout>

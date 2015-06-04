@@ -15,14 +15,16 @@ import android.widget.TextView;
 
 public class DashboardActivity extends ActionBarActivity {
 
-
+    private Route route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        new MotionSensor(this);
+
+        this.route = new Route();
+        this.route.setMs(new MotionSensor((SensorManager) getSystemService(Context.SENSOR_SERVICE), (WindowManager)this.getSystemService(Context.WINDOW_SERVICE), this.route));
     }
 
     @Override
@@ -48,15 +50,8 @@ public class DashboardActivity extends ActionBarActivity {
     }
 
 
-    public void adjustScore(float[] screenVec) {
+    public void updateView(int score) {
 
-        TextView xField = (TextView)findViewById(R.id.xField);
-        xField.setText(Float.toString(screenVec[0]));
 
-        TextView yField = (TextView)findViewById(R.id.yField);
-        yField.setText(Float.toString(screenVec[1]));
-
-        TextView zField = (TextView)findViewById(R.id.zField);
-        zField.setText(Float.toString(screenVec[2]));
     }
 }

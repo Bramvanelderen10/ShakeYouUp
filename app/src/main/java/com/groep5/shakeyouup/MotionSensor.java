@@ -1,7 +1,5 @@
 package com.groep5.shakeyouup;
 
-import android.app.Activity;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,16 +13,34 @@ public class MotionSensor implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor aSensor;
-    private Activity activity;
+    private WindowManager windowManager;
 
-    public MotionSensor(Activity activity) {
-        this.activity = activity;
+    private Route route;
 
-        sensorManager = (SensorManager) this.activity.getSystemService(Context.SENSOR_SERVICE);
-        aSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+    public float[] getTotalVector() {
+        return totalVector;
+    }
+
+    public void setTotalVector(float[] totalVector) {
+        this.totalVector = totalVector;
+    }
+
+    private float[] totalVector;
+
+    public MotionSensor(SensorManager sm, WindowManager wm, Route route) {
+
+        this.route = route;
+        this.sensorManager = sm;
+        this.windowManager = wm;
+        this.aSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         //Register sensor in the manager DUNNO WHAT THE DELAY IS
-        sensorManager.registerListener(this, aSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        this.sensorManager.registerListener(this, this.aSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        this.totalVector = new float[3];
+        this.totalVector[0] = 0;
+        this.totalVector[1] = 0;
+        this.totalVector[2] = 0;
     }
 
     @Override
@@ -39,7 +55,11 @@ public class MotionSensor implements SensorEventListener {
 
         DashboardActivity DA = (DashboardActivity)this.activity;
 
-        DA.adjustScore(vector);
+
+        this.totalVector[0] += (vector[0] > 1.2)? vector[0]: 0;
+        this.totalVector[1] += (vector[1] > 1.2)? vector[1]: 0;
+        this.totalVector[2] += (vector[2] > 1.0)? vector[2]: 0;
+
     }
 
     @Override
@@ -49,9 +69,7 @@ public class MotionSensor implements SensorEventListener {
 
     private float[] recalculateVector(float[] vector) {
 
-        WindowManager windowMgr =
-                (WindowManager)this.activity.getSystemService(Context.WINDOW_SERVICE);
-        int rotation = windowMgr.getDefaultDisplay().getRotation();
+        int rotation = this.windowManager.getDefaultDisplay().getRotation();
 
         float[] screenVec = new float[3];
         final int axisSwap[][] = {
@@ -62,9 +80,9 @@ public class MotionSensor implements SensorEventListener {
 
         final int[] as = axisSwap[rotation];
 
-        screenVec[0]  =  (float)as[0] * vector[ as[2] ];
-        screenVec[1]  =  (float)as[1] * vector[ as[3] ];
-        screenVec[2]  =  vector[2];
+        screenVec[0]  =  Math.abs((float) as[0] * vector[as[2]]);
+        screenVec[1]  =  Math.abs((float)as[1] * vector[ as[3] ]);
+        screenVec[2]  =  Math.abs(vector[2]);
 
         return screenVec;
     }
