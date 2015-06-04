@@ -1,30 +1,30 @@
 package com.groep5.shakeyouup;
 
 import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import java.util.Timer;
 
 
 public class DashboardActivity extends ActionBarActivity {
 
-    private Route route;
+    private Route route =  null;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-
-        this.route = new Route();
-        this.route.setMs(new MotionSensor((SensorManager) getSystemService(Context.SENSOR_SERVICE), (WindowManager)this.getSystemService(Context.WINDOW_SERVICE), this.route));
+        View stop = findViewById(R.id.stop);
+        stop.setVisibility(View.GONE);
     }
 
     @Override
@@ -49,9 +49,55 @@ public class DashboardActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void start(View v) {
+        this.route = new Route();
+        this.route.setMotionSensor(
+                new MotionSensor(
+                        (SensorManager) getSystemService(Context.SENSOR_SERVICE),
+                        (WindowManager) this.getSystemService(Context.WINDOW_SERVICE)
+                ));
+        this.timer = new Timer();
+        timer.schedule(new DashboardTimerTask(this), 0, 1000);
 
-    public void updateView(int score) {
+        View stop = findViewById(R.id.stop);
+        stop.setVisibility(View.VISIBLE);
 
+        View start = findViewById(R.id.start);
+        start.setVisibility(View.GONE);
+    }
 
+    public void stop(View v) {
+
+        if (this.route == null) return;
+        //TODO execute method in route that saves the route into db
+        //TODO retrieve and display final score
+        //TODO remove motionsensor from route
+        timer.cancel();
+        timer = null;
+        route = null;
+
+        View stop = findViewById(R.id.stop);
+        stop.setVisibility(View.GONE);
+
+        View start = findViewById(R.id.start);
+        start.setVisibility(View.VISIBLE);
+    }
+
+    public void updateDashboard() {
+        //This method usually runs outside the main threads but to access views we need to get back in the UI thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                float currentScore = route.getCurrentScore();
+
+                float timeRunning = route.getCurrentTime();
+
+                TextView scoreView = (TextView) findViewById(R.id.currentScore);
+                scoreView.setText(Float.toString(currentScore));
+
+                TextView timeView = (TextView) findViewById(R.id.time);
+                timeView.setText(Float.toString(timeRunning));
+            }
+        });
     }
 }

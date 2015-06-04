@@ -15,21 +15,10 @@ public class MotionSensor implements SensorEventListener {
     private Sensor aSensor;
     private WindowManager windowManager;
 
-    private Route route;
-
-    public float[] getTotalVector() {
-        return totalVector;
-    }
-
-    public void setTotalVector(float[] totalVector) {
-        this.totalVector = totalVector;
-    }
-
     private float[] totalVector;
 
-    public MotionSensor(SensorManager sm, WindowManager wm, Route route) {
+    public MotionSensor(SensorManager sm, WindowManager wm) {
 
-        this.route = route;
         this.sensorManager = sm;
         this.windowManager = wm;
         this.aSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -52,9 +41,6 @@ public class MotionSensor implements SensorEventListener {
         vector[2] = event.values[2];
 
         vector = this.recalculateVector(vector);
-
-        DashboardActivity DA = (DashboardActivity)this.activity;
-
 
         this.totalVector[0] += (vector[0] > 1.2)? vector[0]: 0;
         this.totalVector[1] += (vector[1] > 1.2)? vector[1]: 0;
@@ -85,5 +71,13 @@ public class MotionSensor implements SensorEventListener {
         screenVec[2]  =  Math.abs(vector[2]);
 
         return screenVec;
+    }
+
+    public float[] getTotalVector() {
+        return totalVector;
+    }
+
+    public void setTotalVector(float[] totalVector) {
+        this.totalVector = totalVector;
     }
 }
