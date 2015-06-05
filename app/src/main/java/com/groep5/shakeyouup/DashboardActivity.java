@@ -1,9 +1,11 @@
 package com.groep5.shakeyouup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,5 +101,18 @@ public class DashboardActivity extends ActionBarActivity {
                 timeView.setText(Float.toString(timeRunning));
             }
         });
+    }
+
+    //TODO: actually implement this method somewhere
+    public void onClickShare (View v)
+    {
+        int score = 0;
+        Log.i("Share", "User shared his score: " + score );
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "fubar");
+        startActivity(Intent.createChooser(shareIntent, "Share with:"));
     }
 }
