@@ -110,6 +110,10 @@ public class DashboardActivity extends ActionBarActivity {
         });
     }
 
+    public void viewRoutes(View v) {
+
+    }
+
     //TODO: actually implement this method somewhere
     public void onClickShare (View v)
     {

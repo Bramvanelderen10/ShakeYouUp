@@ -59,4 +59,14 @@
         android:layout_marginTop="19dp"
         android:layout_alignRight="@+id/finalScore"
         android:layout_alignEnd="@+id/finalScore" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Route lijst"
+        android:id="@+id/viewRoutesButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="viewRoutes"/>
 </RelativeLayout>
