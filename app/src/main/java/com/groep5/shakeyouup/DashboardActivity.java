@@ -77,13 +77,19 @@ public class DashboardActivity extends ActionBarActivity {
         if (this.journey == null) return;
 
         timer.cancel();
+        timer = null;
 
         journey.stop();
-        float score = journey.calculateFinalScore();
+        float score = journey.getFinalScore();
         float time = journey.getCurrentTime();
 
-        //TODO DISPLAY FINAL SCORE AND TIME
-        timer = null;
+
+
+        TextView finalScoreView = (TextView)findViewById(R.id.finalScore);
+        TextView timeView = (TextView)findViewById(R.id.time);
+        timeView.setText(Float.toString(time));
+        finalScoreView.setText(Float.toString(score));
+
 
         View stop = findViewById(R.id.stop);
         stop.setVisibility(View.GONE);
@@ -108,6 +114,21 @@ public class DashboardActivity extends ActionBarActivity {
                 timeView.setText(Float.toString(timeRunning));
             }
         });
+    }
+
+    public void save(View v) {
+
+        TextView startLocationView = (TextView)findViewById(R.id.startLocationText);
+        TextView endLocationView = (TextView)findViewById(R.id.endLocationText);
+
+        String[] location = new String[2];
+        location[0] = startLocationView.getText().toString();
+        location[1] = endLocationView.getText().toString();
+
+        journey.save(location);
+
+
+
     }
 
     public void viewRoutes(View v) {

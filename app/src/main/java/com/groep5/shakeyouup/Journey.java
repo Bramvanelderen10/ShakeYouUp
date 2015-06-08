@@ -1,18 +1,18 @@
 package com.groep5.shakeyouup;
 
+import java.util.List;
+
 /**
  * Created by Bram on 6/4/2015.
  */
 public class Journey {
     private MotionSensor ms;
-
     private DatabaseManager dm;
-
     private float startTime;
+    private int finalScore;
 
     public Journey(DatabaseManager dm) {
         this.dm = dm;
-
     }
 
     public boolean start() {
@@ -23,24 +23,21 @@ public class Journey {
     }
 
     public boolean stop() {
-        Route route = new Route();
-        route.setStartLocation("den haag");
-        route.setEndLocation("rotterdam");
-
-        route.setTime((int)getCurrentTime());
-
-        route.setScore((int) calculateFinalScore());
-
-        dm.addRoute(route);
+        finalScore = (int) calculateFinalScore();
 
         return true;
     }
 
     //TODO calculate score based on motion time and distance
-    public float calculateFinalScore() {
+    private float calculateFinalScore() {
         float[] vector = this.ms.getTotalVector();
 
         return vector[0] + vector[1] + vector[2];
+    }
+
+    public int getFinalScore() {
+
+        return finalScore;
     }
 
     public float getCurrentScore() {
@@ -58,5 +55,20 @@ public class Journey {
 
     public void setMotionSensor(MotionSensor ms) {
         this.ms = ms;
+    }
+
+    public void save(String[] location) {
+        Route route = new Route();
+        route.setStartLocation(location[0]);
+        route.setEndLocation(location[1]);
+
+        route.setTime((int)getCurrentTime());
+
+        route.setScore(finalScore);
+
+        dm.addRoute(route);
+
+        List<Route> routes = dm.getAllRoutes();
+        routes.size();
     }
 }
