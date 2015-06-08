@@ -20,7 +20,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TABLE_ROUTES = "route";
     private static final String KEY_ID = "id";
     private static final String KEY_START_LOCATION = "startLocation";
-    private static final String KEY_END_LOCATION = "startLocation";
+    private static final String KEY_END_LOCATION = "endLocation";
     private static final String KEY_DISTANCE = "distance";
     private static final String KEY_TIME = "time";
     private static final String KEY_SCORE = "score";
