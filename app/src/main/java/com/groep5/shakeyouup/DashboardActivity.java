@@ -17,7 +17,7 @@ import java.util.Timer;
 
 public class DashboardActivity extends ActionBarActivity {
 
-    private Route route =  null;
+    private Journey route =  null;
     private Timer timer;
 
     @Override
@@ -52,7 +52,7 @@ public class DashboardActivity extends ActionBarActivity {
     }
 
     public void start(View v) {
-        this.route = new Route();
+        this.route = new Journey(new DatabaseManager(this));
         this.route.setMotionSensor(
                 new MotionSensor(
                         (SensorManager) getSystemService(Context.SENSOR_SERVICE),
@@ -75,6 +75,8 @@ public class DashboardActivity extends ActionBarActivity {
         //TODO retrieve and display final score
         //TODO remove motionsensor from route
         timer.cancel();
+
+//        route.saveRoute();
         timer = null;
         route = null;
 

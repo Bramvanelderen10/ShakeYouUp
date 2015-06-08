@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.security.KeyException;
-
 /**
  * Created by Bram on 6/7/2015.
  */
@@ -44,19 +42,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public void addRoute(
-            int id,
-            String name,
-            int distance,
-            int time,
-            int score
+            Route route
     ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, name);
-        values.put(KEY_DISTANCE, distance);
-        values.put(KEY_TIME, time);
-        values.put(KEY_SCORE, score);
+        values.put(KEY_NAME, route.getName());
+        values.put(KEY_DISTANCE, route.getDistance());
+        values.put(KEY_TIME, route.getTime());
+        values.put(KEY_SCORE, route.getScore());
 
         db.insert(TABLE_ROUTES, null, values);
         db.close();
