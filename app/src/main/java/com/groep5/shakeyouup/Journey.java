@@ -10,8 +10,6 @@ public class Journey {
 
     private float startTime;
 
-    private Route route;
-
     public Journey(DatabaseManager dm) {
         this.dm = dm;
 
@@ -26,7 +24,8 @@ public class Journey {
 
     public boolean stop() {
         Route route = new Route();
-        route.setName("1-2");
+        route.setStartLocation("den haag");
+        route.setEndLocation("rotterdam");
 
         route.setTime((int)getCurrentTime());
 
@@ -41,7 +40,7 @@ public class Journey {
     public float calculateFinalScore() {
         float[] vector = this.ms.getTotalVector();
 
-        return 10;
+        return vector[0] + vector[1] + vector[2];
     }
 
     public float getCurrentScore() {
@@ -57,20 +56,7 @@ public class Journey {
         return currentTime - startTime;
     }
 
-
-    public MotionSensor getMs() {
-        return ms;
-    }
-
     public void setMotionSensor(MotionSensor ms) {
         this.ms = ms;
-    }
-
-    public float getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(float startTime) {
-        this.startTime = startTime;
     }
 }

@@ -12,12 +12,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Timer;
 
 
 public class DashboardActivity extends ActionBarActivity {
 
-    private Journey route =  null;
+    private Journey journey =  null;
     private Timer timer;
 
     @Override
@@ -52,12 +53,15 @@ public class DashboardActivity extends ActionBarActivity {
     }
 
     public void start(View v) {
-        this.route = new Journey(new DatabaseManager(this));
-        this.route.setMotionSensor(
+        //Reset journey
+        this.journey = null;
+        this.journey = new Journey(new DatabaseManager(this));
+        this.journey.setMotionSensor(
                 new MotionSensor(
                         (SensorManager) getSystemService(Context.SENSOR_SERVICE),
                         (WindowManager) this.getSystemService(Context.WINDOW_SERVICE)
                 ));
+        this.journey.start();
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 1000);
 
@@ -70,15 +74,16 @@ public class DashboardActivity extends ActionBarActivity {
 
     public void stop(View v) {
 
-        if (this.route == null) return;
-        //TODO execute method in route that saves the route into db
-        //TODO retrieve and display final score
-        //TODO remove motionsensor from route
+        if (this.journey == null) return;
+
         timer.cancel();
 
-//        route.saveRoute();
+        journey.stop();
+        float score = journey.calculateFinalScore();
+        float time = journey.getCurrentTime();
+
+        //TODO DISPLAY FINAL SCORE AND TIME
         timer = null;
-        route = null;
 
         View stop = findViewById(R.id.stop);
         stop.setVisibility(View.GONE);
@@ -92,9 +97,9 @@ public class DashboardActivity extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                float currentScore = route.getCurrentScore();
+                float currentScore = journey.getCurrentScore();
 
-                float timeRunning = route.getCurrentTime();
+                float timeRunning = journey.getCurrentTime();
 
                 TextView scoreView = (TextView) findViewById(R.id.currentScore);
                 scoreView.setText(Float.toString(currentScore));

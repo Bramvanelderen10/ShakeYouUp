@@ -6,7 +6,8 @@ package com.groep5.shakeyouup;
 public class Route {
 
     private int id;
-    private String name;
+    private String startLocation;
+    private String endLocation;
     private int distance;
     private int time;
     private int score;
@@ -29,12 +30,20 @@ public class Route {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getStartLocation() {
+        return startLocation;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartLocation(String startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public String getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(String endLocation) {
+        this.endLocation = endLocation;
     }
 
     public int getDistance() {
