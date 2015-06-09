@@ -28,6 +28,12 @@ public class DashboardActivity extends ActionBarActivity {
 
         View stop = findViewById(R.id.stop);
         stop.setVisibility(View.GONE);
+
+        findViewById(R.id.startLocationText).setVisibility(View.GONE);
+        findViewById(R.id.startLocationView).setVisibility(View.GONE);
+        findViewById(R.id.endLocationView).setVisibility(View.GONE);
+        findViewById(R.id.endLocationText).setVisibility(View.GONE);
+        findViewById(R.id.save).setVisibility(View.GONE);
     }
 
     @Override
@@ -65,16 +71,28 @@ public class DashboardActivity extends ActionBarActivity {
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 1000);
 
-        View stop = findViewById(R.id.stop);
-        stop.setVisibility(View.VISIBLE);
+        findViewById(R.id.currentScore).setVisibility(View.VISIBLE);
+        findViewById(R.id.start).setVisibility(View.GONE);
 
-        View start = findViewById(R.id.start);
-        start.setVisibility(View.GONE);
+        findViewById(R.id.stop).setVisibility(View.VISIBLE);
+        findViewById(R.id.startLocationText).setVisibility(View.GONE);
+        findViewById(R.id.startLocationView).setVisibility(View.GONE);
+        findViewById(R.id.endLocationView).setVisibility(View.GONE);
+        findViewById(R.id.endLocationText).setVisibility(View.GONE);
+        findViewById(R.id.save).setVisibility(View.GONE);
+        findViewById(R.id.finalScore).setVisibility(View.GONE);
+
+        TextView startLocationText = (TextView)findViewById(R.id.startLocationText);
+        startLocationText.setText("");
+        TextView endLocationText = (TextView)findViewById(R.id.endLocationText);
+        endLocationText.setText("");
+
     }
 
     public void stop(View v) {
 
         if (this.journey == null) return;
+
 
         timer.cancel();
         timer = null;
@@ -84,18 +102,21 @@ public class DashboardActivity extends ActionBarActivity {
         float time = journey.getCurrentTime();
 
 
-
-        TextView finalScoreView = (TextView)findViewById(R.id.finalScore);
-        TextView timeView = (TextView)findViewById(R.id.time);
+        TextView finalScoreView = (TextView) findViewById(R.id.finalScore);
+        TextView timeView = (TextView) findViewById(R.id.time);
         timeView.setText(Float.toString(time));
         finalScoreView.setText(Float.toString(score));
 
 
-        View stop = findViewById(R.id.stop);
-        stop.setVisibility(View.GONE);
-
-        View start = findViewById(R.id.start);
-        start.setVisibility(View.VISIBLE);
+        findViewById(R.id.stop).setVisibility(View.GONE);
+        findViewById(R.id.currentScore).setVisibility(View.GONE);
+        findViewById(R.id.start).setVisibility(View.VISIBLE);
+        findViewById(R.id.startLocationText).setVisibility(View.VISIBLE);
+        findViewById(R.id.startLocationView).setVisibility(View.VISIBLE);
+        findViewById(R.id.endLocationView).setVisibility(View.VISIBLE);
+        findViewById(R.id.endLocationText).setVisibility(View.VISIBLE);
+        findViewById(R.id.save).setVisibility(View.VISIBLE);
+        findViewById(R.id.finalScore).setVisibility(View.VISIBLE);
     }
 
     public void updateDashboard() {
@@ -127,8 +148,10 @@ public class DashboardActivity extends ActionBarActivity {
 
         journey.save(location);
 
-
-
+        startLocationView.setVisibility(View.GONE);
+        endLocationView.setVisibility(View.GONE);
+        findViewById(R.id.startLocationView).setVisibility(View.GONE);
+        findViewById(R.id.endLocationView).setVisibility(View.GONE);
     }
 
     public void viewRoutes(View v) {
