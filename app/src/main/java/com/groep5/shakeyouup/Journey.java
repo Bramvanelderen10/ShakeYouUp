@@ -58,16 +58,17 @@ public class Journey {
         float movementPerMeter = movementScore / distance;
 
         rating = 1;
+        //TODO fine tune numbers
         if (movementPerMeter < 10) rating = 10;
         if (movementPerMeter < 20) rating = 9;
         if (movementPerMeter < 30) rating = 8;
-        if (movementPerMeter < 40) rating = 10;
-        if (movementPerMeter < 50) rating = 10;
-        if (movementPerMeter < 60) rating = 10;
-        if (movementPerMeter < 70) rating = 10;
-        if (movementPerMeter < 80) rating = 10;
-        if (movementPerMeter < 90) rating = 10;
-        if (movementPerMeter < 100) rating = 10;
+        if (movementPerMeter < 40) rating = 7;
+        if (movementPerMeter < 50) rating = 6;
+        if (movementPerMeter < 60) rating = 5;
+        if (movementPerMeter < 70) rating = 4;
+        if (movementPerMeter < 80) rating = 3;
+        if (movementPerMeter < 90) rating = 2;
+        if (movementPerMeter < 100) rating = 1;
 
         return rating;
     }
