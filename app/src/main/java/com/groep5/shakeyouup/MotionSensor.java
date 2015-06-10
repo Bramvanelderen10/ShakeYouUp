@@ -16,20 +16,26 @@ public class MotionSensor implements SensorEventListener {
     private WindowManager windowManager;
 
     private float[] totalVector;
+    private float[] eventVector;
 
     public MotionSensor(SensorManager sm, WindowManager wm) {
 
-        this.sensorManager = sm;
-        this.windowManager = wm;
-        this.aSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sensorManager = sm;
+        windowManager = wm;
+        aSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         //Register sensor in the manager DUNNO WHAT THE DELAY IS
-        this.sensorManager.registerListener(this, this.aSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, aSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        this.totalVector = new float[3];
-        this.totalVector[0] = 0;
-        this.totalVector[1] = 0;
-        this.totalVector[2] = 0;
+        totalVector = new float[3];
+        totalVector[0] = 0;
+        totalVector[1] = 0;
+        totalVector[2] = 0;
+
+        eventVector = new float[3];
+        eventVector[0] = 0;
+        eventVector[1] = 0;
+        eventVector[2] = 0;
     }
 
     @Override
@@ -42,9 +48,9 @@ public class MotionSensor implements SensorEventListener {
 
         vector = this.recalculateVector(vector);
 
-        this.totalVector[0] += (vector[0] > 1.2)? vector[0]: 0;
-        this.totalVector[1] += (vector[1] > 1.2)? vector[1]: 0;
-        this.totalVector[2] += (vector[2] > 1.0)? vector[2]: 0;
+        eventVector[0] = (vector[0] > 1.2)? vector[0]: 0;
+        eventVector[1] = (vector[1] > 1.2)? vector[1]: 0;
+        eventVector[2] = (vector[2] > 1.0)? vector[2]: 0;
 
     }
 
@@ -73,11 +79,20 @@ public class MotionSensor implements SensorEventListener {
         return screenVec;
     }
 
-    public float[] getTotalVector() {
+    //Update score based on sensor values
+    public float[] updateScore() {
+
+        //Bigger movement adds more points
+        for (int i = 0; i < 3; i++) {
+            if (eventVector[i] > 1.2 && eventVector[i] < 5) totalVector[i] += 1;
+            if (eventVector[i] >= 5 && eventVector[i] < 20) totalVector[i] += 2;
+            if (eventVector[i] >= 20) totalVector[i] += 4;
+        }
+
         return totalVector;
     }
 
-    public void setTotalVector(float[] totalVector) {
-        this.totalVector = totalVector;
+    public float[] getTotalVector() {
+        return totalVector;
     }
 }

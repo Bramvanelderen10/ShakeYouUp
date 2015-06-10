@@ -9,7 +9,7 @@ public class Route {
     private String startLocation;
     private String endLocation;
     private int distance;
-    private int time;
+    private long time;
     private int score;
 
     public Route(){}
@@ -54,11 +54,11 @@ public class Route {
         this.distance = distance;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
 }

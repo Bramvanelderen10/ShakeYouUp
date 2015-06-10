@@ -75,10 +75,13 @@
         android:layout_height="wrap_content"
         android:text="Opslaan"
         android:id="@+id/save"
+        android:layout_marginBottom="39dp"
+        android:onClick="save"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="41dp"
-        android:onClick="save"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/endLocationText"
+        android:layout_toStartOf="@+id/endLocationText" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -123,5 +126,41 @@
         android:layout_alignBottom="@+id/endLocationText"
         android:layout_toLeftOf="@+id/endLocationText"
         android:layout_toStartOf="@+id/endLocationText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deel resultaat"
+        android:id="@+id/share"
+        android:layout_alignTop="@+id/save"
+        android:layout_toRightOf="@+id/save"
+        android:layout_alignRight="@+id/endLocationText"
+        android:layout_alignEnd="@+id/endLocationText"
+        android:onClick="onClickShare"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Score"
+        android:id="@+id/scoreLabel"
+        android:layout_below="@+id/endLocationView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/endLocationText"
+        android:layout_alignRight="@+id/startLocationView"
+        android:layout_alignEnd="@+id/startLocationView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/ratingText"
+        android:layout_alignTop="@+id/scoreLabel"
+        android:layout_alignBottom="@+id/scoreLabel"
+        android:layout_alignRight="@+id/endLocationText"
+        android:layout_alignEnd="@+id/endLocationText"
+        android:layout_toRightOf="@+id/endLocationView"
+        android:layout_toEndOf="@+id/endLocationView" />
 
 </RelativeLayout>
