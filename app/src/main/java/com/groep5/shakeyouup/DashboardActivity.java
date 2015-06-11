@@ -11,6 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.util.Timer;
 
@@ -19,11 +23,25 @@ public class DashboardActivity extends ActionBarActivity {
 
     private Journey journey =  null;
     private Timer timer;
+    private GPSControl GPS = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        GPS = new GPSControl(this, this);
+        // Check availability of play services
+        try {
+            if (checkPlayServices()) {
+                // Building the GoogleApi client
+                GPS.buildGoogleApiClient();
+                GPS.createLocationRequest();
+            }
+        }
+        catch(Exception e){
+            Log.e(GPS.TAG,e.toString());
+        }
 
         View stop = findViewById(R.id.stop);
         stop.setVisibility(View.GONE);
@@ -58,6 +76,28 @@ public class DashboardActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    /*
+     * Boolean used to check up with the Google Play services, required for GPS functionality.
+     * It'd be pretty neat if we could move this over to GPSControl entirely
+     * but at the moment, doing that causes activity issues during the initial startup :(
+     */
+    public boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil
+                .isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        GPS.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "This device is not supported.", Toast.LENGTH_LONG)
+                        .show();
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     public void start(View v) {
@@ -180,5 +220,30 @@ public class DashboardActivity extends ActionBarActivity {
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, "De reis van " + startLocation + " naar " + endLocation + " heeft als cijfer een " + score);
         startActivity(Intent.createChooser(shareIntent, "Share with:"));
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GPS.apiConnect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GPS.checkServices();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GPS.stopServices();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GPS.stopLocationUpdates();
     }
 }
