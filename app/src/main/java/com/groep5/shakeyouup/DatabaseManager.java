@@ -24,6 +24,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_DISTANCE = "distance";
     private static final String KEY_TIME = "time";
     private static final String KEY_SCORE = "score";
+    //TODO Implement foreign keys to location
+    private static final String KEY_START = "start";
+    private static final String KEY_END = "end";
+
+    private static final String TABLE_LOCATIONS = "location";
+    private static final String KEY_L_ID = "id";
+    private static final String KEY_L_NAME = "name";
+    private static final String KEY_L_COORDINATE_X = "coordinate_x";
+    private static final String KEY_L_COORDINATE_Y = "coordinate_y";
 
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,12 +49,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + KEY_TIME +" INTEGER,"
                 + KEY_SCORE +" INTEGER)";
         sqLiteDatabase.execSQL(CREATE_TABLE_ROUTES);
+
+        String CREATE_TABLE_LOCATIONS =  "CREATE TABLE " + TABLE_LOCATIONS +
+                "("
+                + KEY_L_ID +" INTEGER PRIMARY KEY,"
+                + KEY_L_NAME +" TEXT,"
+                + KEY_L_COORDINATE_X +" INTEGER,"
+                + KEY_L_COORDINATE_Y +" INTEGER)";
+        sqLiteDatabase.execSQL(CREATE_TABLE_LOCATIONS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         // Drop older table if existed
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTES);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
 
         // Create tables again
         onCreate(sqLiteDatabase);
@@ -116,5 +134,92 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
 
         return routeList;
+    }
+
+    //TODO Make locations
+    public void addLocation(
+            Location location
+    ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_L_NAME, location.getName());
+        values.put(KEY_L_COORDINATE_X, location.getCoordinates()[0]);
+        values.put(KEY_L_COORDINATE_Y, location.getCoordinates()[1]);
+
+        db.insert(TABLE_LOCATIONS, null, values);
+        db.close();
+    }
+
+    public Location getLocation(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ROUTES, new String[] {
+                        KEY_L_ID,
+                        KEY_L_NAME,
+                        KEY_L_COORDINATE_X,
+                        KEY_L_COORDINATE_Y,
+                }, KEY_L_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Location location = new Location();
+        location.setId(Integer.parseInt(cursor.getString(0)));
+        location.setName(cursor.getString(1));
+        double[] coordinates = new double[2];
+        coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
+        coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
+        location.setCoordinates(coordinates);
+        // return contact
+        return location;
+    }
+
+    public Location getLocationByName(String name) {
+        Location location = null;
+
+        String select = "SELECT * FROM " + TABLE_LOCATIONS + " l WHERE l.name = '" + name + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                location = new Location();
+                location.setId(Integer.parseInt(cursor.getString(0)));
+                location.setName(cursor.getString(1));
+                double[] coordinates = new double[2];
+                coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
+                coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
+                location.setCoordinates(coordinates);
+            } while(cursor.moveToNext());
+        }
+        return location;
+    }
+
+    public List<Location> getAllLocations() {
+        List<Location> locationList = new ArrayList<>();
+
+        String select = "SELECT * FROM " + TABLE_LOCATIONS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Location location = new Location();
+                location.setId(Integer.parseInt(cursor.getString(0)));
+                location.setName(cursor.getString(1));
+                double[] coordinates = new double[2];
+                coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
+                coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
+                location.setCoordinates(coordinates);
+
+                locationList.add(location);
+            } while(cursor.moveToNext());
+        }
+
+        return locationList;
     }
 }
