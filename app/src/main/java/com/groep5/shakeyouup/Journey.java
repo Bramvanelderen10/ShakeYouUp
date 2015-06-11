@@ -10,8 +10,10 @@ public class Journey {
     private DatabaseManager dm;
     private long startTime;
     private int rating;
-
+    private GeoCoordinate startLocation;
+    private GeoCoordinate endLocation;
     private int finalScore;
+    private double distance;
 
     public Journey(DatabaseManager dm) {
         this.dm = dm;
@@ -39,6 +41,8 @@ public class Journey {
 
         route.setScore(rating);
 
+        route.setDistance((int)Math.round(this.distance));
+
         dm.addRoute(route);
 
         List<Route> routes = dm.getAllRoutes();
@@ -52,7 +56,7 @@ public class Journey {
         float movementScore = vector[0] + vector[1] + vector[2];
         finalScore = (int) movementScore;
         long timer = getCurrentTime(); //TODO Maybe do something with this..
-        long distance = 1*1000; //Replace 1 with methode from gps class
+        long distance = (long)Math.round(this.distance) * 1000; //Replace 1 with methode from gps class
 
         //First we divide the movement score by the distance so we get the average score for each meter
         float movementPerMeter = movementScore / distance;
@@ -84,12 +88,6 @@ public class Journey {
         return vector[0] + vector[1] + vector[2];
     }
 
-
-
-
-
-
-
     public void setMotionSensor(MotionSensor ms) {
         this.ms = ms;
     }
@@ -104,4 +102,31 @@ public class Journey {
     public int getFinalScore() {
         return finalScore;
     }
+
+    public GeoCoordinate getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(GeoCoordinate endLocation) {
+        this.endLocation = endLocation;
+    }
+
+    public GeoCoordinate getStartLocation() {
+        return startLocation;
+    }
+
+    public void setStartLocation(GeoCoordinate startLocation) {
+        this.startLocation = startLocation;
+    }
+
+
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
 }

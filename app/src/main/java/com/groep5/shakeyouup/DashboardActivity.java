@@ -31,6 +31,7 @@ public class DashboardActivity extends ActionBarActivity {
         setContentView(R.layout.activity_dashboard);
 
         GPS = new GPSControl(this, this);
+        //TODO MOVE TO GPS CLASS
         // Check availability of play services
         try {
             if (checkPlayServices()) {
@@ -110,6 +111,14 @@ public class DashboardActivity extends ActionBarActivity {
                         (WindowManager) this.getSystemService(Context.WINDOW_SERVICE)
                 ));
         this.journey.start();
+        GPS.togglePeriodicLocationUpdates();
+
+        if (GPS.updateLocation()) {
+            journey.setStartLocation(GPS.getLocation());
+        }
+
+
+
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 500);
 
@@ -136,11 +145,18 @@ public class DashboardActivity extends ActionBarActivity {
 
     public void stop(View v) {
         if (this.journey == null) return;
-
+        if (!GPS.updateLocation()) return;
         timer.cancel();
         timer = null;
 
+        //TODO MOVE THIS INTO JOURNEY WHEN GPS IS MOVED
+        journey.setEndLocation(GPS.getLocation());
         journey.stop();
+
+
+        Double distance = GPS.calcDistance(journey.getStartLocation(), journey.getEndLocation());
+        journey.setDistance(distance);
+
         float score = journey.getFinalScore();
         float time = journey.getCurrentTime();
         int rating = journey.getRating();

@@ -44,6 +44,8 @@ public class GPSControl implements GoogleApiClient.ConnectionCallbacks,
     public GeoCoordinate startDistance = new GeoCoordinate(0,0);
     public GeoCoordinate endDistance = new GeoCoordinate(0,0);
 
+    private GeoCoordinate location;
+
     public GPSControl(Context c, Activity a){
         try{
             this.c = c;
@@ -272,6 +274,28 @@ public class GPSControl implements GoogleApiClient.ConnectionCallbacks,
         } else {
             return c.getString(R.string.lbl_gps_error);
         }
+    }
+
+    public boolean updateLocation() {
+        mLastLocation = LocationServices.FusedLocationApi
+                .getLastLocation(mGoogleApiClient);
+
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            location = new GeoCoordinate(latitude, longitude);
+
+
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public GeoCoordinate getLocation() {
+
+        return location;
     }
 
 }
