@@ -109,7 +109,7 @@ public class Journey {
         if (movementPerMeter < 90) rating = 2;
         if (movementPerMeter < 100) rating = 1;
 
-        return rating;
+        return getRating();
     }
 
     public int getRating() {
