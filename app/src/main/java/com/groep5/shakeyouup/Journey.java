@@ -1,5 +1,6 @@
 package com.groep5.shakeyouup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,13 +11,15 @@ public class Journey {
     private DatabaseManager dm;
     private long startTime;
     private int rating;
-    private GeoCoordinate startLocation;
-    private GeoCoordinate endLocation;
     private int finalScore;
     private double distance;
 
+    private List<GeoCoordinate> routeCoordinates;
+
+
     public Journey(DatabaseManager dm) {
         this.dm = dm;
+        routeCoordinates = new ArrayList<>();
     }
 
     public boolean start() {
@@ -33,17 +36,14 @@ public class Journey {
     }
 
     public void save(String[] location) {
-
-
-
         Location startLocation = dm.getLocationByName(location[0]);
         if (startLocation == null) {
             startLocation = new Location();
             startLocation.setName(location[0]);
 
             double[] startCoordinates = new double[2];
-            startCoordinates[0] = this.startLocation.getLatitude();
-            startCoordinates[1] = this.startLocation.getLongitude();
+            startCoordinates[0] = routeCoordinates.get(0).getLatitude();
+            startCoordinates[1] = routeCoordinates.get(0).getLongitude();
 
             startLocation.setCoordinates(startCoordinates);
 
@@ -56,8 +56,8 @@ public class Journey {
             endLocation.setName(location[1]);
 
             double[] endCoordinates = new double[2];
-            endCoordinates[0] = this.endLocation.getLatitude();
-            endCoordinates[1] = this.endLocation.getLongitude();
+            endCoordinates[0] = routeCoordinates.get(routeCoordinates.size() - 1).getLatitude();
+            endCoordinates[1] = routeCoordinates.get(routeCoordinates.size() - 1).getLongitude();
 
             endLocation.setCoordinates(endCoordinates);
 
@@ -67,8 +67,12 @@ public class Journey {
         startLocation = dm.getLocationByName(startLocation.getName());
         endLocation = dm.getLocationByName(endLocation.getName());
 
+        List<Route> routes = dm.getAllRoutes();
+        routes.size();
+
         Route route = new Route();
 
+        route.setId(routes.size() + 1);
         route.setTime(getCurrentTime());
 
         route.setScore(rating);
@@ -80,8 +84,17 @@ public class Journey {
 
         dm.addRoute(route);
 
-        List<Route> routes = dm.getAllRoutes();
-        routes.size();
+        for (GeoCoordinate coordinate : routeCoordinates) {
+            RouteCoordinate routeCoordinate = new RouteCoordinate();
+            routeCoordinate.setRoute(route);
+            routeCoordinate.setCoordinate(coordinate);
+
+            dm.addRouteCoordinate(routeCoordinate);
+        }
+
+        List<RouteCoordinate> test = dm.getAllRouteCoordinatesByRoute(route);
+        test.size();
+
     }
 
     //TODO calculate score based on motion time and distance
@@ -91,7 +104,7 @@ public class Journey {
         float movementScore = vector[0] + vector[1] + vector[2];
         finalScore = (int) movementScore;
         long timer = getCurrentTime(); //TODO Maybe do something with this..
-        long distance = (long)Math.round(this.distance) * 1000; //Replace 1 with methode from gps class
+        long distance = Math.round(this.distance) * 1000; //Replace 1 with methode from gps class
 
         //First we divide the movement score by the distance so we get the average score for each meter
         float movementPerMeter = movementScore / distance;
@@ -107,7 +120,6 @@ public class Journey {
         if (movementPerMeter < 70) rating = 4;
         if (movementPerMeter < 80) rating = 3;
         if (movementPerMeter < 90) rating = 2;
-        if (movementPerMeter < 100) rating = 1;
 
         return rating;
     }
@@ -138,24 +150,6 @@ public class Journey {
         return finalScore;
     }
 
-    public GeoCoordinate getEndLocation() {
-        return endLocation;
-    }
-
-    public void setEndLocation(GeoCoordinate endLocation) {
-        this.endLocation = endLocation;
-    }
-
-    public GeoCoordinate getStartLocation() {
-        return startLocation;
-    }
-
-    public void setStartLocation(GeoCoordinate startLocation) {
-        this.startLocation = startLocation;
-    }
-
-
-
     public double getDistance() {
         return distance;
     }
@@ -164,4 +158,15 @@ public class Journey {
         this.distance = distance;
     }
 
+    public void addCoordinate(GeoCoordinate coordinate) {
+        routeCoordinates.add(coordinate);
+    }
+
+    public GeoCoordinate[] getStartEndCoordinates() {
+        GeoCoordinate[] geoCoordinates = new GeoCoordinate[2];
+        geoCoordinates[0] = routeCoordinates.get(0);
+        geoCoordinates[1] = routeCoordinates.get(routeCoordinates.size() - 1);
+
+        return geoCoordinates;
+    }
 }
