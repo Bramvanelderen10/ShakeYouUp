@@ -116,8 +116,6 @@ public class DashboardActivity extends ActionBarActivity {
             journey.addCoordinate(GPS.getLocation());
         }
 
-
-
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 500);
         this.timerGPS = new Timer();
@@ -213,13 +211,11 @@ public class DashboardActivity extends ActionBarActivity {
         location[1] = endLocationView.getText().toString();
 
         journey.save(location);
-
-
-
     }
 
     public void viewRoutes(View v) {
-
+        Intent intent = new Intent(this, RouteListActivity.class);
+        startActivity(intent);
     }
 
     public void saveInbetween(View v){
