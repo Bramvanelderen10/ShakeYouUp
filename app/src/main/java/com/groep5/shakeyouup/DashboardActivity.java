@@ -23,6 +23,7 @@ public class DashboardActivity extends ActionBarActivity {
 
     private Journey journey =  null;
     private Timer timer;
+    private Timer timerGPS;
     private GPSControl GPS = null;
 
     @Override
@@ -114,13 +115,16 @@ public class DashboardActivity extends ActionBarActivity {
         GPS.togglePeriodicLocationUpdates();
 
         if (GPS.updateLocation()) {
-            journey.setStartLocation(GPS.getLocation());
+            journey.addCoordinate(GPS.getLocation());
         }
 
 
 
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 500);
+
+        this.timerGPS = new Timer();
+        timerGPS.schedule(new GPSTimerTask(this), 0, 5000);
 
         findViewById(R.id.currentScore).setVisibility(View.VISIBLE);
         findViewById(R.id.start).setVisibility(View.GONE);
@@ -150,11 +154,14 @@ public class DashboardActivity extends ActionBarActivity {
         timer = null;
 
         //TODO MOVE THIS INTO JOURNEY WHEN GPS IS MOVED
-        journey.setEndLocation(GPS.getLocation());
+        journey.addCoordinate(GPS.getLocation());
+
+        timerGPS.cancel();
+        timerGPS = null;
+
         journey.stop();
-
-
-        Double distance = GPS.calcDistance(journey.getStartLocation(), journey.getEndLocation());
+        GeoCoordinate[] geoCoordinates = journey.getStartEndCoordinates();
+        Double distance = GPS.calcDistance(geoCoordinates[0], geoCoordinates[1]);
         journey.setDistance(distance);
 
         float score = journey.getFinalScore();
@@ -198,6 +205,12 @@ public class DashboardActivity extends ActionBarActivity {
                 timeView.setText(Long.toString(timeRunning));
             }
         });
+    }
+
+    public void addCoordinate() {
+        if (GPS.updateLocation()) {
+            journey.addCoordinate(GPS.getLocation());
+        }
     }
 
     public void save(View v) {
@@ -262,4 +275,6 @@ public class DashboardActivity extends ActionBarActivity {
         super.onPause();
         GPS.stopLocationUpdates();
     }
+
+
 }

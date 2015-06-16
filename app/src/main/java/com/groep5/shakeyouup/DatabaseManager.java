@@ -32,6 +32,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_L_COORDINATE_X = "coordinate_x";
     private static final String KEY_L_COORDINATE_Y = "coordinate_y";
 
+    private static final String TABLE_ROUTE_COORDINATES = "route_coordinate";
+    private static final String KEY_R_ID = "id";
+    private static final String KEY_R_COORDINATE_X = "coordinate_x";
+    private static final String KEY_R_COORDINATE_Y = "coordinate_Y";
+    private static final String KEY_R_ROUTE_ID = "route_id";
+
+
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -58,6 +65,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + KEY_L_COORDINATE_X +" INTEGER,"
                 + KEY_L_COORDINATE_Y +" INTEGER)";
         sqLiteDatabase.execSQL(CREATE_TABLE_LOCATIONS);
+
+        String CREATE_TABLE_ROUTE_COORDINATES =  "CREATE TABLE " + TABLE_ROUTE_COORDINATES +
+                "("
+                + KEY_R_ID +" INTEGER PRIMARY KEY,"
+                + KEY_R_COORDINATE_X +" INTEGER,"
+                + KEY_R_COORDINATE_Y +" INTEGER,"
+                + KEY_R_ROUTE_ID +" INTEGER NOT NULL,"
+                + " FOREIGN KEY(" + KEY_R_ROUTE_ID + ") REFERENCES " + TABLE_ROUTES + "(id)"
+                + ")";
+        sqLiteDatabase.execSQL(CREATE_TABLE_ROUTE_COORDINATES);
     }
 
     @Override
@@ -65,6 +82,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         // Drop older table if existed
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_COORDINATES);
 
         // Create tables again
         onCreate(sqLiteDatabase);
@@ -76,6 +94,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(KEY_ID, route.getId());
         values.put(KEY_DISTANCE, route.getDistance());
         values.put(KEY_TIME, route.getTime());
         values.put(KEY_SCORE, route.getScore());
@@ -232,5 +251,67 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
 
         return locationList;
+    }
+
+    public void addRouteCoordinate(
+            RouteCoordinate routeCoordinate
+    ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_R_COORDINATE_X, routeCoordinate.getCoordinate().getLatitude());
+        values.put(KEY_R_COORDINATE_Y, routeCoordinate.getCoordinate().getLongitude());
+        values.put(KEY_R_ROUTE_ID, routeCoordinate.getRoute().getId());
+
+        db.insert(TABLE_ROUTE_COORDINATES, null, values);
+        db.close();
+    }
+
+    public RouteCoordinate getRouteCoordinate(int id) {
+        RouteCoordinate routeCoordinate = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ROUTES, new String[] {
+                        KEY_R_ID,
+                        KEY_R_COORDINATE_X,
+                        KEY_R_COORDINATE_X,
+                        KEY_R_ROUTE_ID
+                }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            routeCoordinate = new RouteCoordinate();
+            routeCoordinate.setId(Integer.parseInt(cursor.getString(0)));
+
+            GeoCoordinate geoCoordinate = new GeoCoordinate(Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)));
+            routeCoordinate.setCoordinate(geoCoordinate);
+
+            routeCoordinate.setRoute(getRoute(Integer.parseInt(cursor.getString(3))));
+        }
+
+        return routeCoordinate;
+    }
+
+    public List<RouteCoordinate> getAllRouteCoordinatesByRoute(Route route) {
+        List<RouteCoordinate> routeCoordinates = new ArrayList<>();
+
+        String select = "SELECT * FROM " + TABLE_ROUTE_COORDINATES + " WHERE " + KEY_R_ROUTE_ID + "=" + route.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                RouteCoordinate routeCoordinate = new RouteCoordinate();
+                routeCoordinate.setId(Integer.parseInt(cursor.getString(0)));
+
+                GeoCoordinate geoCoordinate = new GeoCoordinate(Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)));
+                routeCoordinate.setCoordinate(geoCoordinate);
+
+                routeCoordinate.setRoute(getRoute(Integer.parseInt(cursor.getString(3))));
+                routeCoordinates.add(routeCoordinate);
+            } while(cursor.moveToNext());
+        }
+
+        return routeCoordinates;
     }
 }
