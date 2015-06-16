@@ -4,6 +4,4 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="lbl_gps_error">(Couldn\'t get the location. Make sure location is enabled on the device)</string>
-
-    <color name="bgcolor_facc2e">#FACC2E</color> <!-- a pretty shade of orange -->
 </resources>
