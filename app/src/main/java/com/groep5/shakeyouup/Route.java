@@ -6,11 +6,11 @@ package com.groep5.shakeyouup;
 public class Route {
 
     private int id;
-    private String startLocation;
-    private String endLocation;
     private int distance;
     private long time;
     private int score;
+    private Location startLocation;
+    private Location endLocation;
 
     public Route(){}
 
@@ -30,22 +30,6 @@ public class Route {
         this.id = id;
     }
 
-    public String getStartLocation() {
-        return startLocation;
-    }
-
-    public void setStartLocation(String startLocation) {
-        this.startLocation = startLocation;
-    }
-
-    public String getEndLocation() {
-        return endLocation;
-    }
-
-    public void setEndLocation(String endLocation) {
-        this.endLocation = endLocation;
-    }
-
     public int getDistance() {
         return distance;
     }
@@ -60,5 +44,21 @@ public class Route {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public Location getStartLocation() {
+        return startLocation;
+    }
+
+    public void setStartLocation(Location startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public Location getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(Location endLocation) {
+        this.endLocation = endLocation;
     }
 }

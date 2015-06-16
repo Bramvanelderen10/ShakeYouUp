@@ -19,8 +19,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     private static final String TABLE_ROUTES = "route";
     private static final String KEY_ID = "id";
-    private static final String KEY_START_LOCATION = "startLocation";
-    private static final String KEY_END_LOCATION = "endLocation";
     private static final String KEY_DISTANCE = "distance";
     private static final String KEY_TIME = "time";
     private static final String KEY_SCORE = "score";
@@ -43,11 +41,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         String CREATE_TABLE_ROUTES =  "CREATE TABLE " + TABLE_ROUTES +
                 "("
                 + KEY_ID +" INTEGER PRIMARY KEY,"
-                + KEY_START_LOCATION +" TEXT,"
-                + KEY_END_LOCATION +" TEXT,"
                 + KEY_DISTANCE +" INTEGER,"
                 + KEY_TIME +" INTEGER,"
-                + KEY_SCORE +" INTEGER)";
+                + KEY_SCORE +" INTEGER,"
+                + KEY_START +" INTEGER,"
+                + KEY_END + " INTEGER,"
+                + " FOREIGN KEY(" + KEY_START + ") REFERENCES " + TABLE_LOCATIONS + "(id),"
+                + " FOREIGN KEY(" + KEY_END + ") REFERENCES " + TABLE_LOCATIONS + "(id)"
+                + ")";
         sqLiteDatabase.execSQL(CREATE_TABLE_ROUTES);
 
         String CREATE_TABLE_LOCATIONS =  "CREATE TABLE " + TABLE_LOCATIONS +
@@ -75,11 +76,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_START_LOCATION, route.getStartLocation());
-        values.put(KEY_END_LOCATION, route.getEndLocation());
         values.put(KEY_DISTANCE, route.getDistance());
         values.put(KEY_TIME, route.getTime());
         values.put(KEY_SCORE, route.getScore());
+        values.put(KEY_START, route.getStartLocation().getId());
+        values.put(KEY_END, route.getEndLocation().getId());
 
         db.insert(TABLE_ROUTES, null, values);
         db.close();
@@ -90,11 +91,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_ROUTES, new String[] {
                         KEY_ID,
-                        KEY_START_LOCATION,
-                        KEY_END_LOCATION,
                         KEY_DISTANCE,
                         KEY_TIME,
                         KEY_SCORE,
+                        KEY_START,
+                        KEY_END
                 }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
@@ -102,11 +103,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         Route route = new Route();
         route.setId(Integer.parseInt(cursor.getString(0)));
-        route.setStartLocation(cursor.getString(1));
-        route.setEndLocation(cursor.getString(2));
-        route.setDistance(Integer.parseInt(cursor.getString(3)));
-        route.setTime(Integer.parseInt(cursor.getString(4)));
-        route.setScore(Integer.parseInt(cursor.getString(5)));
+        route.setDistance(Integer.parseInt(cursor.getString(1)));
+        route.setTime(Integer.parseInt(cursor.getString(2)));
+        route.setScore(Integer.parseInt(cursor.getString(3)));
+
+        Location start = this.getLocation(Integer.parseInt(cursor.getString(4)));
+        route.setStartLocation(start);
+
+        Location end = this.getLocation(Integer.parseInt(cursor.getString(5)));
+        route.setEndLocation(end);
         // return contact
         return route;
     }
@@ -119,15 +124,19 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(select, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 Route route = new Route();
                 route.setId(Integer.parseInt(cursor.getString(0)));
-                route.setStartLocation(cursor.getString(1));
-                route.setEndLocation(cursor.getString(2));
-                route.setDistance(Integer.parseInt(cursor.getString(3)));
-                route.setTime(Integer.parseInt(cursor.getString(4)));
-                route.setScore(Integer.parseInt(cursor.getString(5)));
+                route.setDistance(Integer.parseInt(cursor.getString(1)));
+                route.setTime(Integer.parseInt(cursor.getString(2)));
+                route.setScore(Integer.parseInt(cursor.getString(3)));
+
+                Location start = this.getLocation(Integer.parseInt(cursor.getString(4)));
+                route.setStartLocation(start);
+
+                Location end = this.getLocation(Integer.parseInt(cursor.getString(5)));
+                route.setEndLocation(end);
 
                 routeList.add(route);
             } while(cursor.moveToNext());
@@ -154,23 +163,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public Location getLocation(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ROUTES, new String[] {
+        Cursor cursor = db.query(TABLE_LOCATIONS, new String[]{
                         KEY_L_ID,
                         KEY_L_NAME,
                         KEY_L_COORDINATE_X,
                         KEY_L_COORDINATE_Y,
                 }, KEY_L_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        Location location = null;
 
-        Location location = new Location();
-        location.setId(Integer.parseInt(cursor.getString(0)));
-        location.setName(cursor.getString(1));
-        double[] coordinates = new double[2];
-        coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
-        coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
-        location.setCoordinates(coordinates);
+        if (cursor != null && cursor.moveToFirst()) {
+            location = new Location();
+            location.setId(Integer.parseInt(cursor.getString(0)));
+            location.setName(cursor.getString(1));
+            double[] coordinates = new double[2];
+            coordinates[0] = Double.parseDouble(cursor.getString(2));
+            coordinates[1] = Double.parseDouble(cursor.getString(3));
+            location.setCoordinates(coordinates);
+        }
+
         // return contact
         return location;
     }
@@ -184,14 +195,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(select, null);
 
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 location = new Location();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setName(cursor.getString(1));
                 double[] coordinates = new double[2];
-                coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
-                coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
+                coordinates[0] = Double.parseDouble(cursor.getString(2));
+                coordinates[1] = Double.parseDouble(cursor.getString(3));
                 location.setCoordinates(coordinates);
             } while(cursor.moveToNext());
         }
@@ -206,14 +217,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(select, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 Location location = new Location();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setName(cursor.getString(1));
                 double[] coordinates = new double[2];
-                coordinates[0] = (double)Integer.parseInt(cursor.getString(2));
-                coordinates[1] = (double)Integer.parseInt(cursor.getString(3));
+                coordinates[0] = Double.parseDouble(cursor.getString(2));
+                coordinates[1] = Double.parseDouble(cursor.getString(3));
                 location.setCoordinates(coordinates);
 
                 locationList.add(location);

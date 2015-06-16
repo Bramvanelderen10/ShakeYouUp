@@ -33,15 +33,50 @@ public class Journey {
     }
 
     public void save(String[] location) {
+
+
+
+        Location startLocation = dm.getLocationByName(location[0]);
+        if (startLocation == null) {
+            startLocation = new Location();
+            startLocation.setName(location[0]);
+
+            double[] startCoordinates = new double[2];
+            startCoordinates[0] = this.startLocation.getLatitude();
+            startCoordinates[1] = this.startLocation.getLongitude();
+
+            startLocation.setCoordinates(startCoordinates);
+
+            dm.addLocation(startLocation);
+        }
+
+        Location endLocation = dm.getLocationByName(location[1]);
+        if (endLocation == null) {
+            endLocation = new Location();
+            endLocation.setName(location[1]);
+
+            double[] endCoordinates = new double[2];
+            endCoordinates[0] = this.endLocation.getLatitude();
+            endCoordinates[1] = this.endLocation.getLongitude();
+
+            endLocation.setCoordinates(endCoordinates);
+
+            dm.addLocation(endLocation);
+        }
+
+        startLocation = dm.getLocationByName(startLocation.getName());
+        endLocation = dm.getLocationByName(endLocation.getName());
+
         Route route = new Route();
-        route.setStartLocation(location[0]);
-        route.setEndLocation(location[1]);
 
         route.setTime(getCurrentTime());
 
         route.setScore(rating);
 
-        route.setDistance((int)Math.round(this.distance));
+        route.setDistance((int) Math.round(this.distance));
+
+        route.setStartLocation(startLocation);
+        route.setEndLocation(endLocation);
 
         dm.addRoute(route);
 
