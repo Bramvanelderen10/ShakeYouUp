@@ -104,7 +104,7 @@ public class Journey {
         float movementScore = vector[0] + vector[1] + vector[2];
         finalScore = (int) movementScore;
         long timer = getCurrentTime(); //TODO Maybe do something with this..
-        long distance = Math.round(this.distance) * 1000; //Replace 1 with methode from gps class
+        long distance = Math.round(this.distance) * 1000;
 
         //First we divide the movement score by the distance so we get the average score for each meter
         float movementPerMeter = movementScore / distance;
