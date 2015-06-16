@@ -1,166 +1,433 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".DashboardActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".DashboardActivity"
+    android:background="#FACC2E"
+    android:orientation="vertical"
 
-    <Button
-        android:layout_width="wrap_content"
+
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/start"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="103dp"
-        android:onClick="start"/>
+        android:id="@+id/topbarLayout"
+        android:background="#7E76D0">
 
-    <Button
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/topbarButtonLayout"
+            android:padding="4dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Route lijst"
+                android:id="@+id/viewRoutesButton"
+
+                android:onClick="viewRoutes"
+                android:layout_weight="1"
+                android:background="#5A50BB"
+                android:textColor="#ffffff" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"></LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compare"
+                android:id="@+id/compareButtonTop"
+                android:layout_weight="1"
+                android:textColor="#ffffff"
+                android:background="#5A50BB" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Stop"
-        android:id="@+id/stop"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="103dp"
-        android:onClick="stop"/>
+        android:id="@+id/logoLayout"
+        android:paddingTop="35dp"
+        android:gravity="center"
+        android:paddingBottom="5dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"></LinearLayout>
+
+            <ImageView
+                android:layout_width="122dp"
+                android:layout_height="128dp"
+                android:id="@+id/imageView"
+                android:src="@mipmap/logomexican" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"></LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/titleLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Shake You Up"
+                android:id="@+id/logoText"
+                android:textSize="30dp"
+                android:paddingTop="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/currentScore"
-        android:layout_below="@+id/start"
-        android:layout_alignRight="@+id/start"
-        android:layout_alignEnd="@+id/start"
-        android:layout_alignLeft="@+id/start"
-        android:layout_alignStart="@+id/start" />
+        android:id="@+id/startStopLayout"
+        android:gravity="center"
+        android:paddingBottom="15dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/start"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="start"
+            android:background="#5A50BB"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:id="@+id/stop"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="stop"
+            android:background="#5A50BB"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/finalScore"
-        android:layout_below="@+id/currentScore"
-        android:layout_alignLeft="@+id/currentScore"
-        android:layout_alignStart="@+id/currentScore"
-        android:layout_marginTop="19dp"
-        android:layout_alignRight="@+id/currentScore"
-        android:layout_alignEnd="@+id/currentScore" />
+        android:id="@+id/currentRatingScoreLayout"
+        android:gravity="center"
+        android:paddingBottom="15dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentScoreLayout"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/currentScore"
+                android:layout_below="@+id/start"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Current Score"
+                android:id="@+id/currentScoreText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingScoreLayout"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/ratingText"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Rating"
+                android:id="@+id/scoreLabel"
+                android:layout_below="@+id/endLocationView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/endLocationText"
+                android:layout_alignRight="@+id/startLocationView"
+                android:layout_alignEnd="@+id/startLocationView" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/time"
-        android:layout_below="@+id/finalScore"
-        android:layout_alignLeft="@+id/finalScore"
-        android:layout_alignStart="@+id/finalScore"
-        android:layout_marginTop="19dp"
-        android:layout_alignRight="@+id/finalScore"
-        android:layout_alignEnd="@+id/finalScore" />
+        android:id="@+id/timeFinalScoreLayout">
 
-    <Button
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/timeLayout"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/time"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Time"
+                    android:id="@+id/timeText"
+                    android:paddingTop="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/finalScoreLayout"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/finalScore"
+
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Final Score"
+                    android:id="@+id/finalScoreText"
+                    android:paddingTop="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Route lijst"
-        android:id="@+id/viewRoutesButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="viewRoutes"/>
+        android:focusableInTouchMode="false"
+        android:id="@+id/finishedButtonsLayout"
+        android:paddingTop="15dp">
 
-    <Button
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:id="@+id/saveButtonInbetween"
+                android:onClick="saveInbetween"
+                android:background="#5A50BB"
+                android:textColor="#ffffff" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"></LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compare"
+                android:id="@+id/compareButtonFinished"
+                android:background="#5A50BB"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share"
+                android:id="@+id/share"
+                android:layout_alignTop="@+id/save"
+                android:layout_toRightOf="@+id/save"
+                android:layout_alignRight="@+id/endLocationText"
+                android:layout_alignEnd="@+id/endLocationText"
+                android:onClick="onClickShare"
+                android:background="#5A50BB"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Opslaan"
-        android:id="@+id/save"
-        android:layout_marginBottom="39dp"
-        android:onClick="save"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/endLocationText"
-        android:layout_toStartOf="@+id/endLocationText" />
+        android:id="@+id/saveScreenLayout"
+        android:gravity="center">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/startLocationText"
-        android:layout_below="@+id/time"
-        android:layout_alignLeft="@+id/time"
-        android:layout_alignStart="@+id/time"
-        android:layout_alignRight="@+id/viewRoutesButton"
-        android:layout_alignEnd="@+id/viewRoutesButton" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"></LinearLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/endLocationText"
-        android:layout_below="@+id/startLocationText"
-        android:layout_alignLeft="@+id/startLocationText"
-        android:layout_alignStart="@+id/startLocationText"
-        android:layout_alignRight="@+id/viewRoutesButton"
-        android:layout_alignEnd="@+id/viewRoutesButton" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Start locatie"
-        android:id="@+id/startLocationView"
-        android:layout_below="@+id/time"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/startLocationText" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/startDestinationLayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Eind locatie"
-        android:id="@+id/endLocationView"
-        android:layout_alignTop="@+id/endLocationText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/endLocationText"
-        android:layout_toLeftOf="@+id/endLocationText"
-        android:layout_toStartOf="@+id/endLocationText" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Start locatie"
+                    android:id="@+id/startLocationView"
+                    android:paddingRight="5dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Deel resultaat"
-        android:id="@+id/share"
-        android:layout_alignTop="@+id/save"
-        android:layout_toRightOf="@+id/save"
-        android:layout_alignRight="@+id/endLocationText"
-        android:layout_alignEnd="@+id/endLocationText"
-        android:onClick="onClickShare"/>
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/startLocationText"
+                    android:layout_below="@+id/time"
+                    android:layout_alignLeft="@+id/time"
+                    android:layout_alignStart="@+id/time"
+                    android:background="#ffffff" />
+            </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Score"
-        android:id="@+id/scoreLabel"
-        android:layout_below="@+id/endLocationView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/endLocationText"
-        android:layout_alignRight="@+id/startLocationView"
-        android:layout_alignEnd="@+id/startLocationView" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/endDestinationLayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/ratingText"
-        android:layout_alignTop="@+id/scoreLabel"
-        android:layout_alignBottom="@+id/scoreLabel"
-        android:layout_alignRight="@+id/endLocationText"
-        android:layout_alignEnd="@+id/endLocationText"
-        android:layout_toRightOf="@+id/endLocationView"
-        android:layout_toEndOf="@+id/endLocationView" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Eind locatie"
+                    android:id="@+id/endLocationView"
+                    android:layout_alignTop="@+id/endLocationText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignBottom="@+id/endLocationText"
+                    android:layout_toLeftOf="@+id/endLocationText"
+                    android:layout_toStartOf="@+id/endLocationText"
+                    android:paddingRight="5dp" />
 
-</RelativeLayout>
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/endLocationText"
+                    android:layout_below="@+id/startLocationText"
+
+                    android:background="#ffffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:id="@+id/save"
+                    android:onClick="save"
+                    android:background="#5A50BB"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"></LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

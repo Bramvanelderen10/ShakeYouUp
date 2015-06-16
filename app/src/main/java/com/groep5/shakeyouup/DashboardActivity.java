@@ -47,14 +47,12 @@ public class DashboardActivity extends ActionBarActivity {
         View stop = findViewById(R.id.stop);
         stop.setVisibility(View.GONE);
 
-        findViewById(R.id.startLocationText).setVisibility(View.GONE);
-        findViewById(R.id.startLocationView).setVisibility(View.GONE);
-        findViewById(R.id.endLocationView).setVisibility(View.GONE);
-        findViewById(R.id.endLocationText).setVisibility(View.GONE);
-        findViewById(R.id.save).setVisibility(View.GONE);
-        findViewById(R.id.share).setVisibility(View.GONE);
-        findViewById(R.id.scoreLabel).setVisibility(View.GONE);
-        findViewById(R.id.ratingText).setVisibility(View.GONE);
+        findViewById(R.id.currentScoreLayout).setVisibility(View.GONE);
+        findViewById(R.id.timeFinalScoreLayout).setVisibility(View.GONE);
+        findViewById(R.id.finishedButtonsLayout).setVisibility(View.GONE);
+        findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
+        findViewById(R.id.ratingScoreLayout).setVisibility(View.GONE);
+
     }
 
     @Override
@@ -122,19 +120,17 @@ public class DashboardActivity extends ActionBarActivity {
         this.timer = new Timer();
         timer.schedule(new DashboardTimerTask(this), 0, 500);
 
-        findViewById(R.id.currentScore).setVisibility(View.VISIBLE);
+        findViewById(R.id.currentScoreLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.start).setVisibility(View.GONE);
 
         findViewById(R.id.stop).setVisibility(View.VISIBLE);
-        findViewById(R.id.startLocationText).setVisibility(View.GONE);
-        findViewById(R.id.startLocationView).setVisibility(View.GONE);
-        findViewById(R.id.endLocationView).setVisibility(View.GONE);
-        findViewById(R.id.endLocationText).setVisibility(View.GONE);
-        findViewById(R.id.save).setVisibility(View.GONE);
-        findViewById(R.id.finalScore).setVisibility(View.GONE);
-        findViewById(R.id.ratingText).setVisibility(View.GONE);
-        findViewById(R.id.scoreLabel).setVisibility(View.GONE);
-        findViewById(R.id.share).setVisibility(View.GONE);
+        findViewById(R.id.timeLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.finalScoreLayout).setVisibility(View.GONE);
+        findViewById(R.id.finishedButtonsLayout).setVisibility(View.GONE);
+        findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
+        findViewById(R.id.ratingScoreLayout).setVisibility(View.GONE);
+        findViewById(R.id.titleLayout).setVisibility(View.GONE);
+
 
         TextView startLocationText = (TextView)findViewById(R.id.startLocationText);
         startLocationText.setText("");
@@ -170,16 +166,12 @@ public class DashboardActivity extends ActionBarActivity {
 
 
         findViewById(R.id.stop).setVisibility(View.GONE);
-        findViewById(R.id.currentScore).setVisibility(View.GONE);
+        findViewById(R.id.currentScoreLayout).setVisibility(View.GONE);
         findViewById(R.id.start).setVisibility(View.VISIBLE);
-        findViewById(R.id.startLocationText).setVisibility(View.VISIBLE);
-        findViewById(R.id.startLocationView).setVisibility(View.VISIBLE);
-        findViewById(R.id.endLocationView).setVisibility(View.VISIBLE);
-        findViewById(R.id.endLocationText).setVisibility(View.VISIBLE);
-        findViewById(R.id.save).setVisibility(View.VISIBLE);
-        findViewById(R.id.finalScore).setVisibility(View.VISIBLE);
-        findViewById(R.id.scoreLabel).setVisibility(View.VISIBLE);
-        findViewById(R.id.ratingText).setVisibility(View.VISIBLE);
+        findViewById(R.id.timeFinalScoreLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.finishedButtonsLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.ratingScoreLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.finalScoreLayout).setVisibility(View.VISIBLE);
     }
 
     public void updateDashboard() {
@@ -211,11 +203,19 @@ public class DashboardActivity extends ActionBarActivity {
 
         journey.save(location);
 
-        findViewById(R.id.share).setVisibility(View.VISIBLE);
+
+
     }
 
     public void viewRoutes(View v) {
 
+    }
+
+    public void saveInbetween(View v){
+
+        findViewById(R.id.saveScreenLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.finishedButtonsLayout).setVisibility(View.GONE);
+        findViewById(R.id.timeFinalScoreLayout).setVisibility(View.GONE);
     }
 
     //TODO: actually implement this method somewhere
