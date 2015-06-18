@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,9 @@ public class RouteDetailActivity extends ActionBarActivity implements OnMapReady
             scoreView.setText(Integer.toString(route.getScore()));
 
             TextView distanceView = (TextView)findViewById(R.id.distanceText);
-            distanceView.setText(Double.toString(route.getDistance()));
+            DecimalFormat formatter = new DecimalFormat("#0.00");
+            distanceView.setText(formatter.format(route.getDistance()/1000) + "km");
+            //distanceView.setText(Double.toString(route.getDistance()));
 
             routeCoordinateList = dm.getAllRouteCoordinatesByRoute(route);
 
