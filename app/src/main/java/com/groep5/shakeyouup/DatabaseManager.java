@@ -37,6 +37,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_R_COORDINATE_Y = "coordinate_Y";
     private static final String KEY_R_ROUTE_ID = "route_id";
 
+    private static final String TABLE_ROUTE_MOVEMENT = "route_movement";
+    private static final String KEY_M_ID = "id";
+    private static final String KEY_M_MOVEMENT = "movement";
+    private static final String KEY_M_TIME = "time";
+    private static final String KEY_M_ROUTE_ID = "route_id";
+
 
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,6 +80,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + " FOREIGN KEY(" + KEY_R_ROUTE_ID + ") REFERENCES " + TABLE_ROUTES + "(id)"
                 + ")";
         sqLiteDatabase.execSQL(CREATE_TABLE_ROUTE_COORDINATES);
+
+        String CREATE_TABLE_ROUTE_MOVEMENT =  "CREATE TABLE " + TABLE_ROUTE_MOVEMENT +
+                "("
+                + KEY_M_ID +" INTEGER PRIMARY KEY,"
+                + KEY_M_MOVEMENT +" INTEGER,"
+                + KEY_M_TIME +" INTEGER,"
+                + KEY_M_ROUTE_ID +" INTEGER NOT NULL,"
+                + " FOREIGN KEY(" + KEY_M_ROUTE_ID + ") REFERENCES " + TABLE_ROUTES + "(id)"
+                + ")";
+        sqLiteDatabase.execSQL(CREATE_TABLE_ROUTE_MOVEMENT);
     }
 
     @Override
@@ -82,6 +98,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_COORDINATES);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_MOVEMENT);
 
         // Create tables again
         onCreate(sqLiteDatabase);
@@ -269,10 +286,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
         RouteCoordinate routeCoordinate = null;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ROUTES, new String[] {
+        Cursor cursor = db.query(TABLE_ROUTE_COORDINATES, new String[] {
                         KEY_R_ID,
                         KEY_R_COORDINATE_X,
-                        KEY_R_COORDINATE_X,
+                        KEY_R_COORDINATE_Y,
                         KEY_R_ROUTE_ID
                 }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
@@ -311,5 +328,66 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
 
         return routeCoordinates;
+    }
+
+    public void addRouteMovement(
+            RouteMovement routeMovement
+    ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_M_MOVEMENT, routeMovement.getMovement());
+        values.put(KEY_M_TIME, routeMovement.getTime());
+        values.put(KEY_M_ROUTE_ID, routeMovement.getRoute().getId());
+
+        db.insert(TABLE_ROUTE_MOVEMENT, null, values);
+        db.close();
+    }
+
+    public RouteMovement getRouteMovement(int id) {
+        RouteMovement routeMovement = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ROUTE_MOVEMENT, new String[] {
+                        KEY_M_ID,
+                        KEY_M_MOVEMENT,
+                        KEY_M_TIME,
+                        KEY_M_ROUTE_ID
+                }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            routeMovement = new RouteMovement();
+            routeMovement.setId(Integer.parseInt(cursor.getString(0)));
+            routeMovement.setMovement(Double.parseDouble(cursor.getString(1)));
+            routeMovement.setTime(Long.parseLong(cursor.getString(2)));
+            routeMovement.setRoute(getRoute(Integer.parseInt(cursor.getString(3))));
+        }
+
+        return routeMovement;
+    }
+
+    public List<RouteMovement> getAllRouteMovementByRoute(Route route) {
+        List<RouteMovement> routeMovements = new ArrayList<>();
+
+        String select = "SELECT * FROM " + TABLE_ROUTE_MOVEMENT + " WHERE " + KEY_M_ROUTE_ID + "=" + route.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                RouteMovement routeMovement = new RouteMovement();
+
+                routeMovement = new RouteMovement();
+                routeMovement.setId(Integer.parseInt(cursor.getString(0)));
+                routeMovement.setMovement(Double.parseDouble(cursor.getString(1)));
+                routeMovement.setTime(Long.parseLong(cursor.getString(2)));
+                routeMovement.setRoute(getRoute(Integer.parseInt(cursor.getString(3))));
+
+                routeMovements.add(routeMovement);
+            } while(cursor.moveToNext());
+        }
+
+        return routeMovements;
     }
 }
