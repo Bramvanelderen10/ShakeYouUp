@@ -22,7 +22,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_DISTANCE = "distance";
     private static final String KEY_TIME = "time";
     private static final String KEY_SCORE = "score";
-    //TODO Implement foreign keys to location
     private static final String KEY_START = "start";
     private static final String KEY_END = "end";
 
@@ -164,7 +163,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return routeList;
     }
 
-    //TODO Make locations
     public void addLocation(
             Location location
     ) {

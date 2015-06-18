@@ -29,6 +29,7 @@ public class RouteDetailActivity extends ActionBarActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_route_detail);
 
         Bundle extras = getIntent().getExtras();
@@ -59,6 +60,7 @@ public class RouteDetailActivity extends ActionBarActivity implements OnMapReady
             GoogleMap map = mapFragment.getMap();
 
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            //Adding markers on google map and adding the coordinates to the Bounds builder
             List<Marker> markers = new ArrayList<>();
             for (RouteCoordinate routeCoordinate: routeCoordinateList) {
                 LatLng latLng = new LatLng(
@@ -67,13 +69,14 @@ public class RouteDetailActivity extends ActionBarActivity implements OnMapReady
                 );
 
                 markers.add(map.addMarker(
-                        new MarkerOptions().position(latLng).title("test")
+                        new MarkerOptions().position(latLng)
                 ));
 
                 builder.include(latLng);
             }
 
             LatLngBounds bounds = builder.build();
+            //Google map gets adjusted on the bounds that have been build based on the markers
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200,200, 10);
             map.moveCamera(cu);
 
