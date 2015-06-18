@@ -53,6 +53,7 @@ public class DashboardActivity extends ActionBarActivity {
         findViewById(R.id.finishedButtonsLayout).setVisibility(View.GONE);
         findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
         findViewById(R.id.ratingScoreLayout).setVisibility(View.GONE);
+        findViewById(R.id.savedConfirm).setVisibility(View.GONE);
 
     }
 
@@ -130,6 +131,7 @@ public class DashboardActivity extends ActionBarActivity {
         findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
         findViewById(R.id.ratingScoreLayout).setVisibility(View.GONE);
         findViewById(R.id.titleLayout).setVisibility(View.GONE);
+        findViewById(R.id.savedConfirm).setVisibility(View.GONE);
 
 
         TextView startLocationText = (TextView)findViewById(R.id.startLocationText);
@@ -211,6 +213,8 @@ public class DashboardActivity extends ActionBarActivity {
         location[1] = endLocationView.getText().toString();
 
         journey.save(location);
+        findViewById(R.id.savedConfirm).setVisibility(View.VISIBLE);
+        findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
     }
 
     public void viewRoutes(View v) {

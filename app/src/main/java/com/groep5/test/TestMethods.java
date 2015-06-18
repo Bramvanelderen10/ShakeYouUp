@@ -33,11 +33,11 @@ public class TestMethods extends AndroidTestCase {
         /*
          The formula used by calcDistance is the "Haversine formula" and goes as follows:
 
-         a = sin²(??/2) + cos ?1 ? cos ?2 ? sin²(??/2)
+         a = sin(??/2) + cos ?1 ? cos ?2 ? sin(??/2)
          c = 2 ? atan2( ?a, ?(1?a) )
          d = R ? c
 
-         where 	? is latitude, ? is longitude, R is earth’s radius (mean radius = 6,371km)
+         where 	? is latitude, ? is longitude, R is earths radius (mean radius = 6,371km)
 
          According to the formula, this means that the distance between Amsterdam and Rotterdam should be 56998.72205888608 meters
           */

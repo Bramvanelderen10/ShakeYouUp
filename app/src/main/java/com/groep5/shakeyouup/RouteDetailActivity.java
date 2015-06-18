@@ -50,7 +50,7 @@ public class RouteDetailActivity extends ActionBarActivity implements OnMapReady
             scoreView.setText(Integer.toString(route.getScore()));
 
             TextView distanceView = (TextView)findViewById(R.id.distanceText);
-            distanceView.setText(Integer.toString(route.getDistance()));
+            distanceView.setText(Integer.toString((int) route.getDistance()));
 
             routeCoordinateList = dm.getAllRouteCoordinatesByRoute(route);
 
