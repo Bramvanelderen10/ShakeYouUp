@@ -2,8 +2,8 @@ package com.groep5.shakeyouup;
 
 /**
  * Created by Martijn on 11-6-2015.
+ * @deprecated, should be replaced with LangLng
  */
-//TODO redundand class, switch to LangLng instead
 public class GeoCoordinate {
     private double latitude;
     private double longitude;
