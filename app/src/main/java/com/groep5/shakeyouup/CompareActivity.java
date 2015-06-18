@@ -4,9 +4,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CompareActivity extends ActionBarActivity {
+
+    DatabaseManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,11 +24,22 @@ public class CompareActivity extends ActionBarActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_compare);
 
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        dm = new DatabaseManager(this);
 
+        List<Route> routes = dm.getAllRoutes();
 
+        List<String> items = new ArrayList<>();
+        for (Route route : routes) {
+            String id = String.valueOf(route.getId());
+            String startLocation = route.getStartLocation().getName();
+            String endLocation = route.getEndLocation().getName();
 
+            items.add(id + " " + startLocation + " - " + endLocation);
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
-
+        spinner.setAdapter(arrayAdapter);
     }
 
 

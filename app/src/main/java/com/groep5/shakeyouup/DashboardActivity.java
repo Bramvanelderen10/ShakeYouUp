@@ -33,7 +33,6 @@ public class DashboardActivity extends ActionBarActivity {
         setContentView(R.layout.activity_dashboard);
 
         GPS = new GPSControl(this, this);
-        //TODO MOVE TO GPS CLASS
         // Check availability of play services
         try {
             if (checkPlayServices()) {
@@ -148,7 +147,6 @@ public class DashboardActivity extends ActionBarActivity {
         timer.cancel();
         timer = null;
 
-        //TODO MOVE THIS INTO JOURNEY WHEN GPS IS MOVED
         journey.addCoordinate(GPS.getLocation());
 
         timerGPS.cancel();
@@ -230,7 +228,6 @@ public class DashboardActivity extends ActionBarActivity {
         findViewById(R.id.timeFinalScoreLayout).setVisibility(View.GONE);
     }
 
-    //TODO: actually implement this method somewhere
     public void onClickShare (View v)
     {
         TextView startLocationText = (TextView)findViewById(R.id.startLocationText);

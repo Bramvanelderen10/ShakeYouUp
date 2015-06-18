@@ -18,6 +18,7 @@ import java.util.List;
 public class RouteListActivity extends ActionBarActivity {
 
     private ArrayList<HashMap<String, String>> list;
+    private DatabaseManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class RouteListActivity extends ActionBarActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_route_list);
 
-        DatabaseManager dm = new DatabaseManager(this);
+        dm = new DatabaseManager(this);
         List<Route> routes = dm.getAllRoutes();
         list = new ArrayList<>();
 
