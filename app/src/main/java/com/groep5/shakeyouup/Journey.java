@@ -38,29 +38,26 @@ public class Journey {
     }
 
     public void save(String[] location) {
-        Location startLocation = dm.getLocationByName(location[0]);
-        if (startLocation == null) {
-            startLocation = new Location();
-            startLocation.setName(location[0]);
+        Location startLocation =  new Location();
 
-            GeoCoordinate startCoordinates = routeCoordinates.get(0);
+        startLocation.setName(location[0]);
 
-            startLocation.setCoordinates(startCoordinates);
+        GeoCoordinate startCoordinates = routeCoordinates.get(0);
 
-            dm.addLocation(startLocation);
-        }
+        startLocation.setCoordinates(startCoordinates);
 
-        Location endLocation = dm.getLocationByName(location[1]);
-        if (endLocation == null) {
-            endLocation = new Location();
-            endLocation.setName(location[1]);
+        dm.addLocation(startLocation);
 
-            GeoCoordinate endCoordinates = routeCoordinates.get(routeCoordinates.size() - 1);
 
-            endLocation.setCoordinates(endCoordinates);
+        Location endLocation = new Location();
+        endLocation.setName(location[1]);
 
-            dm.addLocation(endLocation);
-        }
+        GeoCoordinate endCoordinates = routeCoordinates.get(routeCoordinates.size() - 1);
+
+        endLocation.setCoordinates(endCoordinates);
+
+        dm.addLocation(endLocation);
+
 
         startLocation = dm.getLocationByName(startLocation.getName());
         endLocation = dm.getLocationByName(endLocation.getName());
@@ -135,14 +132,18 @@ public class Journey {
     public float updateScore() {
         float[] vector = this.ms.updateScore();
 
+
+        return vector[0] + vector[1] + vector[2];
+    }
+
+    public void updateMovement() {
+        float[] vector = this.ms.updateScore();
         double movement = vector[0] + vector[1] + vector[2];
 
         RouteMovement routeMovement = new RouteMovement();
         routeMovement.setMovement(movement);
         routeMovement.setTime(getCurrentTime());
         routeMovements.add(routeMovement);
-
-        return vector[0] + vector[1] + vector[2];
     }
 
     public void setMotionSensor(MotionSensor ms) {

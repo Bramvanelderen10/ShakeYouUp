@@ -66,10 +66,12 @@ public class RouteListActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
-                HashMap<String, String> hash = list.get(position);
-                hash.size();
-                int routeId = Integer.parseInt(hash.get("1"));
-                viewRouteDetails(routeId);
+                if (position != 0) {
+                    HashMap<String, String> hash = list.get(position);
+                    hash.size();
+                    int routeId = Integer.parseInt(hash.get("1"));
+                    viewRouteDetails(routeId);
+                }
             }
         });
     }

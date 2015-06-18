@@ -254,9 +254,6 @@ public class GPSControl implements GoogleApiClient.ConnectionCallbacks,
         // Assign the new location
         mLastLocation = location;
 
-        Toast.makeText(c, "Location changed!",
-                Toast.LENGTH_SHORT).show();
-
         // Displaying the new location on UI
         displayLocation();
     }
