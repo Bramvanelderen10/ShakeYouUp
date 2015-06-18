@@ -24,7 +24,7 @@ public class MotionSensor implements SensorEventListener {
         windowManager = wm;
         aSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
-        //Register sensor in the manager DUNNO WHAT THE DELAY IS
+        //Register sensor in the manager with a delay of 3
         sensorManager.registerListener(this, aSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         totalVector = new float[3];

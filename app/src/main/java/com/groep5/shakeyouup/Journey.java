@@ -41,9 +41,7 @@ public class Journey {
             startLocation = new Location();
             startLocation.setName(location[0]);
 
-            double[] startCoordinates = new double[2];
-            startCoordinates[0] = routeCoordinates.get(0).getLatitude();
-            startCoordinates[1] = routeCoordinates.get(0).getLongitude();
+            GeoCoordinate startCoordinates = routeCoordinates.get(0);
 
             startLocation.setCoordinates(startCoordinates);
 
@@ -55,9 +53,7 @@ public class Journey {
             endLocation = new Location();
             endLocation.setName(location[1]);
 
-            double[] endCoordinates = new double[2];
-            endCoordinates[0] = routeCoordinates.get(routeCoordinates.size() - 1).getLatitude();
-            endCoordinates[1] = routeCoordinates.get(routeCoordinates.size() - 1).getLongitude();
+            GeoCoordinate endCoordinates = routeCoordinates.get(routeCoordinates.size() - 1);
 
             endLocation.setCoordinates(endCoordinates);
 
@@ -77,7 +73,7 @@ public class Journey {
 
         route.setScore(rating);
 
-        route.setDistance((int) Math.round(this.distance));
+        route.setDistance(Math.round(this.distance));
 
         route.setStartLocation(startLocation);
         route.setEndLocation(endLocation);

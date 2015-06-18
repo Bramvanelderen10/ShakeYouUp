@@ -6,7 +6,7 @@ package com.groep5.shakeyouup;
 public class Route {
 
     private int id;
-    private int distance;
+    private double distance;
     private long time;
     private int score;
     private Location startLocation;
@@ -30,11 +30,11 @@ public class Route {
         this.id = id;
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 

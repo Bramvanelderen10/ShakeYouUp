@@ -122,7 +122,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         Route route = new Route();
         route.setId(Integer.parseInt(cursor.getString(0)));
-        route.setDistance(Integer.parseInt(cursor.getString(1)));
+        route.setDistance(Double.parseDouble(cursor.getString(1)));
         route.setTime(Integer.parseInt(cursor.getString(2)));
         route.setScore(Integer.parseInt(cursor.getString(3)));
 
@@ -147,7 +147,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             do {
                 Route route = new Route();
                 route.setId(Integer.parseInt(cursor.getString(0)));
-                route.setDistance(Integer.parseInt(cursor.getString(1)));
+                route.setDistance(Double.parseDouble(cursor.getString(1)));
                 route.setTime(Integer.parseInt(cursor.getString(2)));
                 route.setScore(Integer.parseInt(cursor.getString(3)));
 
@@ -172,8 +172,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_L_NAME, location.getName());
-        values.put(KEY_L_COORDINATE_X, location.getCoordinates()[0]);
-        values.put(KEY_L_COORDINATE_Y, location.getCoordinates()[1]);
+        values.put(KEY_L_COORDINATE_X, location.getCoordinates().getLatitude());
+        values.put(KEY_L_COORDINATE_Y, location.getCoordinates().getLongitude());
 
         db.insert(TABLE_LOCATIONS, null, values);
         db.close();
@@ -195,9 +195,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
             location = new Location();
             location.setId(Integer.parseInt(cursor.getString(0)));
             location.setName(cursor.getString(1));
-            double[] coordinates = new double[2];
-            coordinates[0] = Double.parseDouble(cursor.getString(2));
-            coordinates[1] = Double.parseDouble(cursor.getString(3));
+            double lat = Double.parseDouble(cursor.getString(2));
+            double lon = Double.parseDouble(cursor.getString(3));
+            GeoCoordinate coordinates = new GeoCoordinate(lat,lon);
             location.setCoordinates(coordinates);
         }
 
@@ -219,9 +219,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 location = new Location();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setName(cursor.getString(1));
-                double[] coordinates = new double[2];
-                coordinates[0] = Double.parseDouble(cursor.getString(2));
-                coordinates[1] = Double.parseDouble(cursor.getString(3));
+                double lat = Double.parseDouble(cursor.getString(2));
+                double lon = Double.parseDouble(cursor.getString(3));
+                GeoCoordinate coordinates = new GeoCoordinate(lat,lon);
                 location.setCoordinates(coordinates);
             } while(cursor.moveToNext());
         }
@@ -241,9 +241,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 Location location = new Location();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setName(cursor.getString(1));
-                double[] coordinates = new double[2];
-                coordinates[0] = Double.parseDouble(cursor.getString(2));
-                coordinates[1] = Double.parseDouble(cursor.getString(3));
+                double lat = Double.parseDouble(cursor.getString(2));
+                double lon = Double.parseDouble(cursor.getString(3));
+                GeoCoordinate coordinates = new GeoCoordinate(lat,lon);
                 location.setCoordinates(coordinates);
 
                 locationList.add(location);

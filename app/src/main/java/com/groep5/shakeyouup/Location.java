@@ -8,7 +8,7 @@ import java.util.Locale;
 public class Location {
     private int id;
     private String name;
-    private double[] coordinates;
+    private GeoCoordinate coordinates;
 
     public Location(){};
 
@@ -28,11 +28,11 @@ public class Location {
         this.name = name;
     }
 
-    public double[] getCoordinates() {
+    public GeoCoordinate getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(double[] coordinates) {
+    public void setCoordinates(GeoCoordinate coordinates) {
         this.coordinates = coordinates;
     }
 }
