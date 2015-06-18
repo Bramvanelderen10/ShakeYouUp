@@ -51,7 +51,8 @@
                     android:id="@+id/compareButtonTop"
                     android:layout_weight="1"
                     android:textColor="#ffffff"
-                    android:background="#5A50BB" />
+                    android:background="#5A50BB"
+                    android:onClick="onClickCompare"/>
             </LinearLayout>
 
         </LinearLayout>

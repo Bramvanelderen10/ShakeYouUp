@@ -247,6 +247,11 @@ public class DashboardActivity extends ActionBarActivity {
         startActivity(Intent.createChooser(shareIntent, "Share with:"));
     }
 
+    public void onClickCompare (View v) {
+        Intent intent = new Intent(this, CompareActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onStart() {

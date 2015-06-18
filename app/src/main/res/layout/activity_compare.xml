@@ -4,11 +4,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.groep5.shakeyouup.CompareActivity">
+    tools:context="com.groep5.shakeyouup.CompareActivity"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="142dp">
+        android:layout_height="wrap_content">
 
         <Spinner
             android:layout_width="wrap_content"
@@ -17,7 +18,261 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:layout_below="@+id/spinner"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Compare"
+            android:id="@+id/compare"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="compare"/>
     </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="169dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.09">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Start Location"
+                android:id="@+id/start1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="End Location"
+                android:id="@+id/end1"
+                android:layout_below="@+id/start1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/startText1"
+                android:layout_toStartOf="@+id/startText1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/startText1"
+                android:layout_alignBottom="@+id/start1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/start1"
+                android:layout_toEndOf="@+id/start1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/endtext1"
+                android:layout_alignBottom="@+id/end1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/startText1"
+                android:layout_alignStart="@+id/startText1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Distance"
+                android:id="@+id/distance1"
+                android:layout_below="@+id/end1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/start1"
+                android:layout_alignEnd="@+id/start1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Time"
+                android:id="@+id/time1"
+                android:layout_below="@+id/distance1"
+                android:layout_alignLeft="@+id/distance1"
+                android:layout_alignStart="@+id/distance1"
+                android:layout_alignRight="@+id/start1"
+                android:layout_alignEnd="@+id/start1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/distanceText1"
+                android:layout_above="@+id/time1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/endtext1"
+                android:layout_alignStart="@+id/endtext1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/timeText1"
+                android:layout_alignBottom="@+id/time1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/distanceText1"
+                android:layout_alignStart="@+id/distanceText1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Score"
+                android:id="@+id/score1"
+                android:layout_below="@+id/time1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/scoreText1"
+                android:layout_alignBottom="@+id/score1"
+                android:layout_toRightOf="@+id/time1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="179dp"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Start Location"
+                android:id="@+id/start2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="End Location"
+                android:id="@+id/end2"
+                android:layout_below="@+id/start2"
+                android:layout_alignRight="@+id/start2"
+                android:layout_alignEnd="@+id/start2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Distance"
+                android:id="@+id/distance2"
+                android:layout_below="@+id/end2"
+                android:layout_alignRight="@+id/end2"
+                android:layout_alignEnd="@+id/end2"
+                android:layout_alignLeft="@+id/end2"
+                android:layout_alignStart="@+id/end2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Time"
+                android:id="@+id/time2"
+                android:layout_below="@+id/distance2"
+                android:layout_alignRight="@+id/distance2"
+                android:layout_alignEnd="@+id/distance2"
+                android:layout_alignLeft="@+id/end2"
+                android:layout_alignStart="@+id/end2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/startText2"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/start2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/endText2"
+                android:layout_above="@+id/distance2"
+                android:layout_toRightOf="@+id/start2"
+                android:layout_alignRight="@+id/startText2"
+                android:layout_alignEnd="@+id/startText2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/distanceText2"
+                android:layout_above="@+id/time2"
+                android:layout_toRightOf="@+id/end2"
+                android:layout_alignRight="@+id/endText2"
+                android:layout_alignEnd="@+id/endText2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/timeText2"
+                android:layout_alignBottom="@+id/time2"
+                android:layout_toRightOf="@+id/distance2"
+                android:layout_alignRight="@+id/distanceText2"
+                android:layout_alignEnd="@+id/distanceText2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Score"
+                android:id="@+id/score2"
+                android:layout_below="@+id/time2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/scoreText2"
+                android:layout_alignBottom="@+id/score2"
+                android:layout_toRightOf="@+id/time2"
+                android:layout_alignRight="@+id/timeText2"
+                android:layout_alignEnd="@+id/timeText2" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>
