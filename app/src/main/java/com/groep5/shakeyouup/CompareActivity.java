@@ -1,5 +1,6 @@
 package com.groep5.shakeyouup;
 
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +48,6 @@ public class CompareActivity extends ActionBarActivity {
 
         spinner.setAdapter(arrayAdapter);
         spinner2.setAdapter(arrayAdapter);
-
-
-
 
     }
 
@@ -107,5 +108,38 @@ public class CompareActivity extends ActionBarActivity {
         distance2.setText(Double.toString(route2.getDistance()));
         time2.setText(Long.toString(route2.getTime()));
         score2.setText(Integer.toString(route2.getScore()));
+
+
+        GraphView graphView = (GraphView)findViewById(R.id.graph);
+
+        List<RouteMovement> routeMovements = dm.getAllRouteMovementByRoute(route1);
+        DataPoint[] dataPoints = new DataPoint[routeMovements.size()];
+
+        int i = 0;
+        for (RouteMovement routeMovement : routeMovements) {
+
+            dataPoints[i] = new DataPoint(routeMovement.getTime(), routeMovement.getMovement());
+            i++;
+        }
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
+        series.setColor(Color.BLUE);
+
+        List<RouteMovement> routeMovements2 = dm.getAllRouteMovementByRoute(route2);
+        DataPoint[] dataPoints2 = new DataPoint[routeMovements2.size()];
+
+        int i2 = 0;
+        for (RouteMovement routeMovement : routeMovements2) {
+
+            dataPoints2[i2] = new DataPoint(routeMovement.getTime(), routeMovement.getMovement());
+            i2++;
+        }
+
+        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(dataPoints2);
+        series2.setColor(Color.CYAN);
+        graphView.addSeries(series);
+        graphView.addSeries(series2);
+
+
     }
 }

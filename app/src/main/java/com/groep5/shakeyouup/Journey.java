@@ -13,6 +13,7 @@ public class Journey {
     private int rating;
     private int finalScore;
     private double distance;
+    private List<RouteMovement> routeMovements;
 
     private List<GeoCoordinate> routeCoordinates;
 
@@ -20,6 +21,7 @@ public class Journey {
     public Journey(DatabaseManager dm) {
         this.dm = dm;
         routeCoordinates = new ArrayList<>();
+        routeMovements = new ArrayList<>();
     }
 
     public boolean start() {
@@ -88,6 +90,11 @@ public class Journey {
             dm.addRouteCoordinate(routeCoordinate);
         }
 
+        for (RouteMovement routeMovement : routeMovements) {
+            routeMovement.setRoute(route);
+            dm.addRouteMovement(routeMovement);
+        }
+
         List<RouteCoordinate> test = dm.getAllRouteCoordinatesByRoute(route);
         test.size();
 
@@ -127,6 +134,13 @@ public class Journey {
 
     public float updateScore() {
         float[] vector = this.ms.updateScore();
+
+        double movement = vector[0] + vector[1] + vector[2];
+
+        RouteMovement routeMovement = new RouteMovement();
+        routeMovement.setMovement(movement);
+        routeMovement.setTime(getCurrentTime());
+        routeMovements.add(routeMovement);
 
         return vector[0] + vector[1] + vector[2];
     }
