@@ -1,19 +1,84 @@
 package com.groep5.shakeyouup;
 
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class RouteDetailActivity extends ActionBarActivity {
+public class RouteDetailActivity extends ActionBarActivity implements OnMapReadyCallback {
 
-    //In the intent extra's there is the route_id variable
+    private DatabaseManager dm;
+    private List<RouteCoordinate> routeCoordinateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_detail);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int route_id = extras.getInt("route_id");
+            dm = new DatabaseManager(this);
+
+            Route route = dm.getRoute(route_id);
+            Location start = route.getStartLocation();
+            Location end = route.getEndLocation();
+
+            TextView startView = (TextView)findViewById(R.id.startText);
+            startView.setText(start.getName());
+
+            TextView endView = (TextView)findViewById(R.id.endText);
+            endView.setText(end.getName());
+
+            TextView scoreView = (TextView)findViewById(R.id.scoreText);
+            scoreView.setText(Integer.toString(route.getScore()));
+
+            TextView distanceView = (TextView)findViewById(R.id.distanceText);
+            distanceView.setText(Integer.toString(route.getDistance()));
+
+            routeCoordinateList = dm.getAllRouteCoordinatesByRoute(route);
+
+
+            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+            GoogleMap map = mapFragment.getMap();
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            List<Marker> markers = new ArrayList<>();
+            for (RouteCoordinate routeCoordinate: routeCoordinateList) {
+                LatLng latLng = new LatLng(
+                        routeCoordinate.getCoordinate().getLatitude(),
+                        routeCoordinate.getCoordinate().getLongitude()
+                );
+
+                markers.add(map.addMarker(
+                        new MarkerOptions().position(latLng).title("test")
+                ));
+
+                builder.include(latLng);
+            }
+
+            LatLngBounds bounds = builder.build();
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200,200, 10);
+            map.moveCamera(cu);
+
+        }
+
     }
 
     @Override
@@ -36,5 +101,10 @@ public class RouteDetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }

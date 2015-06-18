@@ -7,5 +7,6 @@
 
     <color name="bgcolor_facc2e">#FACC2E</color>
     <string name="title_activity_route_list">RouteListActivity</string>
-    <string name="title_activity_route_detail">RouteDetailActivity</string> <!-- a pretty shade of orange -->
+    <string name="title_activity_route_detail">RouteDetailActivity</string>
+    <string name="title_activity_test">TestActivity</string> <!-- a pretty shade of orange -->
 </resources>
