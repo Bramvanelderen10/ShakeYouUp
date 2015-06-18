@@ -38,6 +38,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCeeq6qSEetf7ALqP-fAT9QTdQ9mNzGcX4" />
 
+        <activity
+            android:name=".CompareActivity"
+            android:label="@string/title_activity_compare" >
+        </activity>
     </application>
 
 </manifest>

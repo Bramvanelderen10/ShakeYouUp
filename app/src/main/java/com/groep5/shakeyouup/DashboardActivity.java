@@ -29,6 +29,7 @@ public class DashboardActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard);
 
         GPS = new GPSControl(this, this);

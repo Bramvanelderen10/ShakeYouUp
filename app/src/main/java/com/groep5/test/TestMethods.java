@@ -31,15 +31,10 @@ public class TestMethods extends AndroidTestCase {
         double roToAm = GPS.calcDistance(rotterdamCoordinate,amsterdamCoordinate);
 
         /*
-         The formula used by calcDistance is the "Haversine formula" and goes as follows:
 
-         a = sin(??/2) + cos ?1 ? cos ?2 ? sin(??/2)
-         c = 2 ? atan2( ?a, ?(1?a) )
-         d = R ? c
+         The formula used by calcDistance is the "Haversine formula".
+         According to the formula, the distance between Amsterdam and Rotterdam should be 56998.72205888608 meters
 
-         where 	? is latitude, ? is longitude, R is earths radius (mean radius = 6,371km)
-
-         According to the formula, this means that the distance between Amsterdam and Rotterdam should be 56998.72205888608 meters
           */
         double expectedDistance = 56998.72205888608;
         assertEquals(amToRo,expectedDistance);
@@ -74,7 +69,38 @@ public class TestMethods extends AndroidTestCase {
         assertNotNull(dbm); // Check if DB is alive and well
         dbm.addRoute(route); // Adding
 
-        // Checking if the route exists in the DB
+        // Checking if the route exists in the DB and has been added succesfully
         assertNotNull(dbm.getRoute(0));
+    }
+
+    // Retrieve a route from the database
+    public void testDatabaseGetRoute() throws Exception{
+        // Setup
+        Context c = getContext();
+        Activity a = null;
+        GPSControl gps = new GPSControl(c, a);
+        DatabaseManager dbm = new DatabaseManager(c);
+        Location l1 = new Location();
+        Location l2 = new Location();
+        l1.setName("Foo");
+        l1.setCoordinates(amsterdam);
+        l1.setId(0);
+        l2.setName("bar");
+        l2.setCoordinates(rotterdam);
+        l2.setId(1);
+        Route route = new Route();
+        route.setStartLocation(l1);
+        route.setEndLocation(l2);
+        route.setId(0);
+        route.setDistance(gps.calcDistance(l1.getCoordinates(), l2.getCoordinates()));
+        route.setScore(1234);
+
+        // Adding route to DB
+        assertNotNull(dbm); // Check if DB is alive and well
+        dbm.addRoute(route); // Adding
+
+        // Checking if the route exists in the DB
+        Route newRoute = dbm.getRoute(0);
+        assertNotNull(newRoute);
     }
 }
