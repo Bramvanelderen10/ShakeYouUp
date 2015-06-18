@@ -30,7 +30,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Route lijst"
+                    android:text="Route list"
                     android:id="@+id/viewRoutesButton"
 
                     android:onClick="viewRoutes"
@@ -312,8 +312,13 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Compare"
-                    android:id="@+id/compareButtonFinished"
+                    android:text="Share"
+                    android:id="@+id/share"
+                    android:layout_alignTop="@+id/save"
+                    android:layout_toRightOf="@+id/save"
+                    android:layout_alignRight="@+id/endLocationText"
+                    android:layout_alignEnd="@+id/endLocationText"
+                    android:onClick="onClickShare"
                     android:background="#5A50BB"
                     android:textColor="#ffffff" />
 
@@ -325,18 +330,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Share"
-                    android:id="@+id/share"
-                    android:layout_alignTop="@+id/save"
-                    android:layout_toRightOf="@+id/save"
-                    android:layout_alignRight="@+id/endLocationText"
-                    android:layout_alignEnd="@+id/endLocationText"
-                    android:onClick="onClickShare"
-                    android:background="#5A50BB"
-                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
 
@@ -369,7 +362,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Start locatie"
+                        android:text="Start location"
                         android:id="@+id/startLocationView"
                         android:paddingRight="5dp" />
 
@@ -394,7 +387,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Eind locatie"
+                        android:text="End location"
                         android:id="@+id/endLocationView"
                         android:layout_alignTop="@+id/endLocationText"
                         android:layout_alignParentLeft="true"
