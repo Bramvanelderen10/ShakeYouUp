@@ -199,6 +199,7 @@ public class DashboardActivity extends ActionBarActivity {
     public void addCoordinate() {
         if (GPS.updateLocation()) {
             journey.addCoordinate(GPS.getLocation());
+            journey.updateMovement();
         }
     }
 
