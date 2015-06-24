@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CompareActivity extends ActionBarActivity {
 
-    DatabaseManager dm;
+    private DatabaseManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class CompareActivity extends ActionBarActivity {
 
             items.add(id + " " + startLocation + " - " + endLocation);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
 
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         spinner.setAdapter(arrayAdapter);
         spinner2.setAdapter(arrayAdapter);
 
@@ -111,13 +111,11 @@ public class CompareActivity extends ActionBarActivity {
 
 
         GraphView graphView = (GraphView)findViewById(R.id.graph);
-
         List<RouteMovement> routeMovements = dm.getAllRouteMovementByRoute(route1);
         DataPoint[] dataPoints = new DataPoint[routeMovements.size()];
 
         int i = 0;
         for (RouteMovement routeMovement : routeMovements) {
-
             dataPoints[i] = new DataPoint(routeMovement.getTime(), routeMovement.getMovement());
             i++;
         }
@@ -130,7 +128,6 @@ public class CompareActivity extends ActionBarActivity {
 
         int i2 = 0;
         for (RouteMovement routeMovement : routeMovements2) {
-
             dataPoints2[i2] = new DataPoint(routeMovement.getTime(), routeMovement.getMovement());
             i2++;
         }
@@ -139,7 +136,5 @@ public class CompareActivity extends ActionBarActivity {
         series2.setColor(Color.CYAN);
         graphView.addSeries(series);
         graphView.addSeries(series2);
-
-
     }
 }

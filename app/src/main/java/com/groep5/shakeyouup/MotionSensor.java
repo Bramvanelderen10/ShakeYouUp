@@ -89,7 +89,7 @@ public class MotionSensor implements SensorEventListener {
             if (eventVector[i] >= 20) totalVector[i] += 4;
         }
 
-        return getTotalVector();
+        return totalVector;
     }
 
     public float[] getTotalVector() {

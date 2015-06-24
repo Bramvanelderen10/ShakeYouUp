@@ -216,7 +216,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
             location.setCoordinates(coordinates);
         }
 
-        // return contact
         return location;
     }
 

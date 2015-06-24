@@ -44,9 +44,7 @@ public class Journey {
             startLocation.setName(location[0]);
 
             GeoCoordinate startCoordinates = routeCoordinates.get(0);
-
             startLocation.setCoordinates(startCoordinates);
-
             dm.addLocation(startLocation);
         }
 
@@ -56,9 +54,7 @@ public class Journey {
             endLocation.setName(location[1]);
 
             GeoCoordinate endCoordinates = routeCoordinates.get(routeCoordinates.size() - 1);
-
             endLocation.setCoordinates(endCoordinates);
-
             dm.addLocation(endLocation);
         }
 
@@ -69,14 +65,10 @@ public class Journey {
         routes.size();
 
         Route route = new Route();
-
         route.setId(routes.size() + 1);
         route.setTime(getCurrentTime());
-
         route.setScore(rating);
-
         route.setDistance(Math.round(this.distance));
-
         route.setStartLocation(startLocation);
         route.setEndLocation(endLocation);
 
@@ -94,19 +86,13 @@ public class Journey {
             routeMovement.setRoute(route);
             dm.addRouteMovement(routeMovement);
         }
-
-        List<RouteCoordinate> test = dm.getAllRouteCoordinatesByRoute(route);
-        test.size();
-
     }
 
-    //TODO calculate score based on motion time and distance
     private float calculateFinalScore() {
         float[] vector = this.ms.getTotalVector();
 
         float movementScore = vector[0] + vector[1] + vector[2];
         finalScore = (int) movementScore;
-        long timer = getCurrentTime(); //TODO Maybe do something with this..
         long distance = Math.round(this.distance) * 1000;
 
         //First we divide the movement score by the distance so we get the average score for each meter
@@ -115,16 +101,16 @@ public class Journey {
         rating = 1;
         //TODO fine tune numbers
         if (movementPerMeter < 10) rating = 10;
-        if (movementPerMeter < 20) rating = 9;
-        if (movementPerMeter < 30) rating = 8;
-        if (movementPerMeter < 40) rating = 7;
-        if (movementPerMeter < 50) rating = 6;
-        if (movementPerMeter < 60) rating = 5;
-        if (movementPerMeter < 70) rating = 4;
-        if (movementPerMeter < 80) rating = 3;
-        if (movementPerMeter < 90) rating = 2;
+        if (movementPerMeter < 20 && movementPerMeter >= 10) rating = 9;
+        if (movementPerMeter < 30 && movementPerMeter >= 20) rating = 8;
+        if (movementPerMeter < 40 && movementPerMeter >= 30) rating = 7;
+        if (movementPerMeter < 50 && movementPerMeter >= 40) rating = 6;
+        if (movementPerMeter < 60 && movementPerMeter >= 50) rating = 5;
+        if (movementPerMeter < 70 && movementPerMeter >= 60) rating = 4;
+        if (movementPerMeter < 80 && movementPerMeter >= 70) rating = 3;
+        if (movementPerMeter < 90 && movementPerMeter >= 80) rating = 2;
 
-        return getRating();
+        return rating;
     }
 
     public int getRating() {
@@ -134,7 +120,6 @@ public class Journey {
 
     public float updateScore() {
         float[] vector = this.ms.updateScore();
-
         double movement = vector[0] + vector[1] + vector[2];
 
         RouteMovement routeMovement = new RouteMovement();
