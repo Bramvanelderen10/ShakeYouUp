@@ -1,5 +1,7 @@
 package com.groep5.shakeyouup;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
@@ -25,12 +27,31 @@ public class DashboardActivity extends ActionBarActivity {
     private Timer timer;
     private Timer timerGPS;
     private GPSControl GPS = null;
+    private OrientationFragment orientationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard_portrait);
+
+        this.orientationFragment = null;
+
+        FragmentManager fragmentManager = getFragmentManager();
+        this.orientationFragment = (OrientationFragment)fragmentManager.findFragmentByTag("orientationFragment");
+
+        if (this.orientationFragment == null) {
+            this.journey = new Journey(new DatabaseManager(this));
+            this.orientationFragment = new OrientationFragment();
+            this.orientationFragment.setJourney(journey);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(this.orientationFragment, "orientationFragment");
+            fragmentTransaction.commit();
+        }
+        else {
+            this.journey = this.orientationFragment.getJourney();
+        }
 
         GPS = new GPSControl(this, this);
         // Check availability of play services
@@ -276,5 +297,15 @@ public class DashboardActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         GPS.stopLocationUpdates();
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.journey = orientationFragment.getJourney();
+
+    }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        orientationFragment.setJourney(this.journey);
     }
 }
