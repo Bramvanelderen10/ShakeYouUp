@@ -7,6 +7,10 @@ import java.util.List;
  * Created by Bram on 6/4/2015.
  */
 public class Journey {
+    public void setFinalScore(int finalScore) {
+        this.finalScore = finalScore;
+    }
+
     private MotionSensor ms;
     private DatabaseManager dm;
     private long startTime;

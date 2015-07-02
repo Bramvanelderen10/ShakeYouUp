@@ -1,7 +1,5 @@
 package com.groep5.shakeyouup;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
@@ -20,38 +18,18 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.util.Timer;
 
-
 public class DashboardActivity extends ActionBarActivity {
 
     private Journey journey =  null;
     private Timer timer;
     private Timer timerGPS;
     private GPSControl GPS = null;
-    private OrientationFragment orientationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard_portrait);
-
-        this.orientationFragment = null;
-
-        FragmentManager fragmentManager = getFragmentManager();
-        this.orientationFragment = (OrientationFragment)fragmentManager.findFragmentByTag("orientationFragment");
-
-        if (this.orientationFragment == null) {
-            this.journey = new Journey(new DatabaseManager(this));
-            this.orientationFragment = new OrientationFragment();
-            this.orientationFragment.setJourney(journey);
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(this.orientationFragment, "orientationFragment");
-            fragmentTransaction.commit();
-        }
-        else {
-            this.journey = this.orientationFragment.getJourney();
-        }
 
         GPS = new GPSControl(this, this);
         // Check availability of play services
@@ -75,7 +53,6 @@ public class DashboardActivity extends ActionBarActivity {
         findViewById(R.id.saveScreenLayout).setVisibility(View.GONE);
         findViewById(R.id.ratingScoreLayout).setVisibility(View.GONE);
         findViewById(R.id.savedConfirm).setVisibility(View.GONE);
-
     }
 
     @Override
@@ -99,6 +76,7 @@ public class DashboardActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     /*
      * Boolean used to check up with the Google Play services, required for GPS functionality.
      * It'd be pretty neat if we could move this over to GPSControl entirely
@@ -154,12 +132,10 @@ public class DashboardActivity extends ActionBarActivity {
         findViewById(R.id.titleLayout).setVisibility(View.GONE);
         findViewById(R.id.savedConfirm).setVisibility(View.GONE);
 
-
         TextView startLocationText = (TextView)findViewById(R.id.startLocationText);
         startLocationText.setText("");
         TextView endLocationText = (TextView)findViewById(R.id.endLocationText);
         endLocationText.setText("");
-
     }
 
     public void stop(View v) {
@@ -243,15 +219,14 @@ public class DashboardActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void saveInbetween(View v){
+    public void saveInbetween(View v) {
 
         findViewById(R.id.saveScreenLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.finishedButtonsLayout).setVisibility(View.GONE);
         findViewById(R.id.timeFinalScoreLayout).setVisibility(View.GONE);
     }
 
-    public void onClickShare (View v)
-    {
+    public void onClickShare (View v) {
         TextView startLocationText = (TextView)findViewById(R.id.startLocationText);
         TextView endLocationText = (TextView)findViewById(R.id.endLocationText);
         TextView scoreView = (TextView)findViewById(R.id.ratingText);
@@ -299,13 +274,21 @@ public class DashboardActivity extends ActionBarActivity {
         GPS.stopLocationUpdates();
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        this.journey = orientationFragment.getJourney();
-
-    }
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        orientationFragment.setJourney(this.journey);
+
+        if (this.journey != null) {
+            savedInstanceState.putInt("score", this.journey.getFinalScore());
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (this.journey != null) {
+            this.journey.setFinalScore(savedInstanceState.getInt("score"));
+        }
     }
 }
